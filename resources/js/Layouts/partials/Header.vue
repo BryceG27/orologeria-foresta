@@ -6,24 +6,12 @@ import { useTemplateStore } from "@/stores/template";
 // Grab example data
 import notifications from "@/data/notifications";
 import { Link, router, useForm } from "@inertiajs/vue3";
-import axios from "axios";
 
 // Main store and Router
 const store = useTemplateStore();
 
-
-const submit = () => {
-  axios.post(route("logout"));
-  router.reload();
-};
-
 // Reactive variables
 const baseSearchTerm = ref("");
-
-// On form search submit functionality
-// function onSubmitSearch() {
-//   router.push("/backend/pages/generic/search?" + baseSearchTerm.value);
-// }
 
 // When ESCAPE key is hit close the header search section
 function eventHeaderSearch(event) {
@@ -90,7 +78,7 @@ onUnmounted(() => {
                     alt="Header Avatar"
                     style="width: 21px"
                   />
-                  <span class="d-none d-sm-inline-block ms-2">{{ $page.props.auth.user.name }}</span>
+                  <span class="d-none d-sm-inline-block ms-2">{{ $page.props.auth.user.username }}</span>
 
                   <i
                     class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"
@@ -108,15 +96,29 @@ onUnmounted(() => {
                       src="/assets/media/avatars/avatar10.jpg"
                       alt="Header Avatar"
                     />
-                    <p class="mt-2 mb-0 fw-medium">Administrator</p>
-                    <p class="mb-0 text-muted fs-sm fw-medium">.</p>
+                    <p class="mt-2 mb-0 fw-medium" v-text="$page.props.auth.user.group.name" />
+                    <p class="mb-0 text-muted fs-sm fw-medium">
+                        {{ $page.props.auth.user.name }} {{ $page.props.auth.user.surname }} 
+                    </p>
                   </div>
 
                   <div role="separator" class="dropdown-divider m-0"></div>
                   <div class="p-2">
-                        <Link :href="route('logout')" method="post" as="button" class="dropdown-item d-flex align-items-center justify-content-between">
-                            <span class="fs-sm fw-medium">Log Out</span>
-                        </Link>
+                    <div class="dropdown-item d-flex align-items-center justify-content-between">
+                      <span class="fs-sm fw-medium">Profilo</span>
+                      <i class="fa fa-fw fa-user opacity-25 ms-1"></i>
+                    </div>
+                  </div>
+                  <div role="separator" class="dropdown-divider m-0"></div>
+                  <div class="p-2">
+                    <Link 
+                      :href="route('logout')" 
+                      method="post" 
+                      as="button" 
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                        <span class="fs-sm fw-medium">Log Out</span>
+                        <i class="fa fa-fw fa-sign-out-alt opacity-25 ms-1"></i>
+                    </Link>
                   </div>
                 </div>
               </div>
