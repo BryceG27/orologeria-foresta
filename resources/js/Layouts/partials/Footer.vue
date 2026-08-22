@@ -18,9 +18,9 @@ const store = useTemplateStore();
                 <i class="fa fa-heart text-danger"></i> by
                 <a
                   class="fw-semibold"
-                  href="https://pixelcave.com"
+                  href="https://github.com/BryceG27"
                   target="_blank"
-                  >pixelcave</a
+                  >Bryce G</a
                 >
               </slot>
             </div>

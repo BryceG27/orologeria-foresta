@@ -14,6 +14,7 @@ class DevSeeder extends Seeder
     {
         $this->call([
             UserGroupSeeder::class,
+            CustomerSeeder::class,
         ]);
 
         \App\Models\User::create([

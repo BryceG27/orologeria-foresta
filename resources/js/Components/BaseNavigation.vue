@@ -126,9 +126,11 @@ function linkClicked(e, submenu) {
       <!-- Normal Link -->
       <div v-if="!node.heading && !node.sub" @click="linkClicked($event)">
         <Link
-          :href="node.to && node.to !== '#' ? node.to : ''"
+          :href="node.to && node.to !== '#' ? route(node.to) : ''"
           class="nav-main-link"
-          :active-class="node.to && node.to !== '#' ? 'active' : ''"
+          :class="{ 
+            'active' : route().current(`${node.to}.*`) || route().current(node.to)
+          }"
         >
           <i v-if="node.icon" :class="`nav-main-link-icon ${node.icon}`"></i>
           <span v-if="node.name" class="nav-main-link-name">

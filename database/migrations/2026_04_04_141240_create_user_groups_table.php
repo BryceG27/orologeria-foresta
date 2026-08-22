@@ -19,7 +19,7 @@ return new class extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\UserGroup::class)->nullable()->constrained()->after('username');
+            $table->foreignIdFor(\App\Models\UserGroup::class)->after('username')->nullable()->constrained();
         });
     }
 

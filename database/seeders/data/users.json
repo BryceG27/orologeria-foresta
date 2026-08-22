@@ -1,0 +1,18 @@
+[
+    {
+        "name" : "Fabrizio",
+        "surname" : "Guarino",
+        "username" : "f.guarino",
+        "password" : "password",
+        "email" : "fabrizio1.guarino@gmail.com",
+        "user_group_id" : 1
+    },
+    {
+        "name" : "Giuseppe",
+        "surname" : "Meduri",
+        "username" : "g.meduri",
+        "password" : "password",
+        "email" : "giuseppe.meduri@gmail.com",
+        "user_group_id" : 1
+    }
+]
