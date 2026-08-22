@@ -30,7 +30,7 @@ const filters = ref({
                     class="btn btn-sm btn-primary"
                 >
                     <i class="fa fa-plus me-1"></i>
-                    Nuovo
+                    Crea
                 </Link>
             </template>
 
@@ -42,7 +42,7 @@ const filters = ref({
                 v-model:filters="filters"
             >
                 <template #empty>
-                    <NoItemsFound message="Nessun cliente trovato" />
+                    <NoItemsFound message="Nessun cliente trovato" icon="fa fa-users-slash" />
                 </template>
 
                 <template #header>

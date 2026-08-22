@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     
     protected $fillable = [
         'name',
@@ -17,7 +18,7 @@ class Customer extends Model
         'email',
         'phone',
         'is_company',
-        'active',
+        'working_custom_id',
         'notes'
     ];
 
@@ -29,6 +30,7 @@ class Customer extends Model
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'is_company' => 'required|boolean',
+            'working_custom_id' => 'nullable|integer',
             'notes' => 'nullable|string'
         ], [
             'name.required_if' => 'Il campo nome è obbligatorio.',

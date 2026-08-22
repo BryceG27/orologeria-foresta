@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\WorkingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('customers', CustomerController::class);
+    Route::resource('workings', WorkingController::class);
 });
 
 require __DIR__.'/auth.php';

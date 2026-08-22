@@ -15,6 +15,10 @@ class DevSeeder extends Seeder
         $this->call([
             UserGroupSeeder::class,
             CustomerSeeder::class,
+            BrandSeeder::class,
+            WorkingStatusSeeder::class,
+            PaymentMethodSeeder::class,
+            WorkingSeeder::class
         ]);
 
         \App\Models\User::create([

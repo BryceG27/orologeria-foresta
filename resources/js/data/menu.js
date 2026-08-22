@@ -6,6 +6,11 @@ export default {
             to  : 'dashboard'
         },
         {
+            name : 'Lavorazioni',
+            icon : 'si si-briefcase',
+            to  : 'workings.index'
+        },
+        {
             name : 'Configurazione',
             heading : true
         },
