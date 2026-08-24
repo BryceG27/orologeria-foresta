@@ -1,8 +1,8 @@
 <script setup>
+import { Head } from '@inertiajs/vue3';
+
 
 </script>
 <template>
-    <div>
-        
-    </div>
+    <Head title="Nuova lavorazione" />
 </template>

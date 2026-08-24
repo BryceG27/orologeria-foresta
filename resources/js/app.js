@@ -13,6 +13,8 @@ import BasePageHeading from "@/Components/BasePageHeading.vue";
 
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
+import ToastService from 'primevue/toastservice';
+
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 const el = document.getElementById('app');
@@ -41,6 +43,7 @@ createInertiaApp({
                     }
                 }
             })
+            .use(ToastService)
             .component("BaseBlock", BaseBlock)
             .component("BaseBackground", BaseBackground)
             .component("BasePageHeading", BasePageHeading)

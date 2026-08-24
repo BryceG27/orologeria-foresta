@@ -23,7 +23,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Customers/Create', [
+            'customer' => new Customer(),
+        ]);
     }
 
     /**
@@ -47,7 +49,9 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return Inertia::render('Customers/Edit', [
+            'customer' => $customer,
+        ]);
     }
 
     /**
@@ -63,6 +67,8 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return redirect()->route('customers.index')->with('success', 'Cliente eliminato con successo.');
     }
 }
