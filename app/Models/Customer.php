@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Customer extends Model
 {
@@ -50,5 +52,9 @@ class Customer extends Model
             'is_company.boolean' => 'Il campo "è un\'azienda" deve essere vero o falso.',
             'notes.string' => 'Il campo note deve essere una stringa.'
         ]);
+    }
+
+    public static function get_customers() {
+        return SELF::select(['*', DB::raw('CASE WHEN is_company THEN company_name ELSE CONCAT(name, " ", surname) END AS description')]);
     }
 }

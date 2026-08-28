@@ -131,22 +131,20 @@ const onRowContextMenu = (event) => {
                     </div>
                 </template>
 
-                <Column field="id">
+                <Column header="Nome" style="min-width: 20rem">
                     <template #body="{ data }">
-
-                    </template>
-                </Column>
-                <Column header="Nome">
-                    <template #body="{ data }">
-                        <span v-if="data.is_company">
-                            <Chip label="Azienda" class="me-2" />
+                        <div class="d-flex justify-content-between align-items-center" v-if="data.is_company">
                             {{ data.company_name }}
-                        </span>
+                            <Chip label="Azienda" class="me-2" />
+                        </div>
                         <span v-else>
                             {{ data.name }} {{ data.surname }}
                         </span>
                     </template>
                 </Column>
+                <Column header="Email" field="email" />
+                <Column header="Telefono" field="phone" />
+                <Column header="Note" field="notes" />
             </DataTable>
         </BaseBlock>
     </AuthenticatedLayout>

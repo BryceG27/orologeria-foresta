@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Customer;
+use App\Models\PaymentMethod;
 use App\Models\Working;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -27,11 +28,12 @@ class WorkingController extends Controller
     {
         return Inertia::render('Workings/Create', [
             'working' => new Working([
-                'working_status_id' => 1
+                'working_status_id' => 1,
+                'working_id' => Working::max('working_id')
             ]),
             'brands' => Brand::all(),
-            'customers' => Customer::all(),
-
+            'customers' => Customer::get_customers()->get(),
+            'payment_methods' => PaymentMethod::all(), 
         ]);
     }
 
