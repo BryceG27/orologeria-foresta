@@ -117,7 +117,7 @@ onMounted(() => {
               <i class="fa fa-circle-notch text-primary"></i>
             </span>
             <span class="smini-hide fs-5 tracking-wider">
-              {{ $page.props.appName }}
+              <img src="/assets/media/various/Logo.png" alt="" class="w-100 h-100 rounded-3">
             </span>
           </Link>
           <!-- END Logo -->

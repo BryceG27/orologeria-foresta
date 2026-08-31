@@ -23,10 +23,10 @@ const props = defineProps({
             </template>
             <template v-else>
                 <div class="col-md-4">
-                    <label for="company_name" class="form-label">Nome Azienda</label>
+                    <label for="company_name" class="form-label">Nome Gioielleria</label>
                 </div>
                 <div class="col-md-4">
-                    <label for="working_custom_id" class="form-label">Numero lavorazione custom</label>
+                    <label for="custom_working_id" class="form-label">Numero lavorazione custom</label>
                 </div>
             </template>
             <div class="col-md-4 text-center">

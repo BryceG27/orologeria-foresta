@@ -1,18 +1,31 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { watch } from 'vue';
 
 import WorkingForm from './Components/WorkingForm.vue';
+import ProcessingButton from '@/Components/ProcessingButton.vue';
 
 const props = defineProps({
     brands : Array,
     customers : Array,
     errors : Object,
     working : Object,
-})
+    working_statuses : Array,
+    payment_methods : Array,
+});
 
 const form = useForm({
     customer_id: null,
+    customer : {
+        name: null,
+        surname: null,
+        company_name: null,
+        is_company: false,
+        custom_working_id: null,
+        email: null,
+        phone: null,
+    },
     working_id: props.working.working_id,
     working_status_id: props.working.working_status_id,
     brand_id: null,
@@ -22,6 +35,14 @@ const form = useForm({
     extra_notes: '',
     payment_method_id: null,
     total_cost: 0.0
+});
+
+watch(form.customer_id, (newValue) => {
+    const customer = props.customers.find(c => c.id === newValue);
+
+    if(customer.is_company) {
+        form.working_id = customer.last_custom_working_id;
+    }
 });
 
 const submit = () => {
@@ -60,6 +81,7 @@ const submit = () => {
                 :form="form"
                 :errors="errors"
                 :payment_methods="payment_methods"
+                :working_statuses="working_statuses"
             />
         </BaseBlock>
     </AuthenticatedLayout>

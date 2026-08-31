@@ -57,7 +57,7 @@ async function onSubmit() {
                         :href="route('dashboard')"
                         class="link-fx fw-semibold fs-2 text-white"
                         >
-                        One<span class="fw-normal">UI</span>
+                        <span class="fw-normal">Orologeria </span>Foresta
                     </Link>
                     <p class="text-white-75 me-xl-8 mt-2">
                         Welcome to your amazing app. Feel free to login and start managing
@@ -102,7 +102,8 @@ async function onSubmit() {
                     :href="route('dashboard')"
                     class="link-fx fw-semibold fs-3 text-dark"
                 >
-                    One<span class="fw-normal">UI</span>
+                    Orologeria
+                    <span class="fw-normal">Foresta</span>
                 </Link>
             </div>
             <div class="p-4 w-100 flex-grow-1 d-flex align-items-center">
@@ -110,7 +111,7 @@ async function onSubmit() {
                     <!-- Header -->
                     <div class="text-center mb-5">
                         <p class="mb-3">
-                            <i class="fa fa-2x fa-circle-notch text-primary-light"></i>
+                            <img src="/assets/media/various/Logo.png" alt="" class="rounded-3" style="width: 17rem">
                         </p>
                         <h1 class="fw-bold mb-2">Entra nel portale</h1>
                         <p class="fw-medium text-muted">

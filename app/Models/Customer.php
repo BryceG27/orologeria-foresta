@@ -20,7 +20,7 @@ class Customer extends Model
         'email',
         'phone',
         'is_company',
-        'working_custom_id',
+        'custom_working_id',
         'notes'
     ];
 
@@ -32,7 +32,7 @@ class Customer extends Model
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
             'is_company' => 'required|boolean',
-            'working_custom_id' => 'nullable|integer',
+            'custom_working_id' => 'nullable|integer',
             'notes' => 'nullable|string'
         ], [
             'name.required_if' => 'Il campo nome è obbligatorio.',
@@ -41,15 +41,15 @@ class Customer extends Model
             'surname.required_if' => 'Il campo cognome è obbligatorio.',
             'surname.string' => 'Il campo cognome deve essere una stringa.',
             'surname.max' => 'Il campo cognome non può superare i 255 caratteri.',
-            'company_name.required_if' => 'Il campo nome azienda è obbligatorio.',
-            'company_name.string' => 'Il campo nome azienda deve essere una stringa.',
-            'company_name.max' => 'Il campo nome azienda non può superare i 255 caratteri.',
+            'company_name.required_if' => 'Il campo nome gioielleria è obbligatorio.',
+            'company_name.string' => 'Il campo nome gioielleria deve essere una stringa.',
+            'company_name.max' => 'Il campo nome gioielleria non può superare i 255 caratteri.',
             'email.email' => 'Il campo email deve essere un indirizzo email valido.',
             'email.max' => 'Il campo email non può superare i 255 caratteri.',
             'phone.string' => 'Il campo telefono deve essere una stringa.',
             'phone.max' => 'Il campo telefono non può superare i 20 caratteri.',
-            'is_company.required' => 'Il campo "è un\'azienda" è obbligatorio.',
-            'is_company.boolean' => 'Il campo "è un\'azienda" deve essere vero o falso.',
+            'is_company.required' => 'Il campo "è un\'gioielleria" è obbligatorio.',
+            'is_company.boolean' => 'Il campo "è un\'gioielleria" deve essere vero o falso.',
             'notes.string' => 'Il campo note deve essere una stringa.'
         ]);
     }
