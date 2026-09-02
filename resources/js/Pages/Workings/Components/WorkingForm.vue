@@ -1,67 +1,38 @@
 <script setup>
 import InputText from 'primevue/inputtext';
-import AutoComplete from 'primevue/autocomplete';
 import Select from 'primevue/select';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
-import Textarea from 'primevue/textarea';
-import InputNumber from 'primevue/inputnumber';
-import DatePicker from 'primevue/datepicker';
+import FieldSet from 'primevue/fieldset';
 
+import WorkingCard from './WorkingCard.vue';
 import InputError from '@/Components/InputError.vue';
 import { ref } from "vue";
 
 const props = defineProps({
+    current_customer_is_company : Boolean,
     brands: Array,
     customers: Array,
-    form: Object,
-    customer_form: Object,
     errors: Object,
+    form : Object,
     payment_methods: Array,
     working_statuses: Array,
 })
 
-const customersFilter = ref([]);
-
-const search = (event) => {
-    customersFilter.value = event.query ? props.customers.filter(customer => {
-        return customer.description?.toLowerCase().includes(event.query?.toLowerCase());
-    }) : props.customers;
-}
-
-
 const store_customer = ref(false);
-
-const enable_customer_form = () => {
-    console.log(props.form.customer_id);
-    
-    /* if(props.form.customer_id) 
-        return;
-
-    if(props.form.customer_id.split(' ').length > 1) {
-        props.form.customer.name = props.form.customer_id.split(' ')[0];
-        props.form.customer.surname = props.form.customer_id.split(' ')[1];
-    } else {
-        props.form.customer.name = props.form.customer_id;
-    }
-
-    props.form.customer_id = null;
-    
-    store_customer.value = true; */
-}
 
 </script>
 <template>
     <div class="container-fluid">
-        <div class="row" v-if="!store_customer">
+        <div class="row pb-3" v-if="!store_customer">
             <div class="col-md-6">
                 <label for="customer_id" class="form-label">Cliente</label>
                 <InputGroup>
-                    <InputGroupAddon>
-                        <Button icon="fa fa-plus" @click="store_customer = true" />
-                    </InputGroupAddon>
+                    <button class="btn btn-alt-success" type="button" @click="store_customer = true">
+                        <i class="fa fa-plus"></i>
+                    </button>
                     <Select 
                         inputId="customer_id"
                         v-model="form.customer_id" 
@@ -89,9 +60,9 @@ const enable_customer_form = () => {
                     <div class="col-md-4">
                         <label for="name" class="form-label">Nome</label>
                         <InputGroup>
-                            <InputGroupAddon>
-                                <Button icon="fa fa-minus" severity="danger" @click="store_customer = false" />
-                            </InputGroupAddon>
+                            <button class="btn btn-alt-danger" @click="store_customer = false">
+                                <i class="fa fa-minus"></i>
+                            </button>
                             <InputText 
                                 class="w-100"
                                 v-model="form.customer.name"
@@ -170,126 +141,25 @@ const enable_customer_form = () => {
             </div>
         </template>
 
-        <hr>
-
-        <div class="row pb-3">
-            <div class="col-md-6">
-                <label for="brand_id" class="form-label">Marchio</label>
-                <Select 
-                    class="w-100"
-                    v-model="form.brand_id"
-                    :options="brands"
-                    option-label="name"
-                    option-value="id"
-                    id="brand_id"
-                    filter
-                    filter-placeholder="Cerca marchio"
-                    show-clear
+        <div 
+            class="pb-3"
+            v-for="(working, index) in form.workings"
+            :key="index"
+        >
+            <FieldSet
+                :toggleable="current_customer_is_company && form.workings.length > 1" 
+                :collapsed="index + 1 != form.workings.length"
+                :legend="current_customer_is_company ? (working.customer.surname ?? `Lavorazione #${index + 1}`) : undefined"
+            >
+                <WorkingCard 
+                    :current_customer_is_company="current_customer_is_company"
+                    :working="working"
+                    :brands="brands"
+                    :working_statuses="working_statuses"
+                    :payment_methods="payment_methods"
                 />
-                <InputError :message="errors.brand_id" />
-            </div>
-            <div class="col-md-6">
-                <label for="reference" class="form-label">Riferimento</label>
-                <InputText 
-                    class="w-100"
-                    v-model="form.reference"
-                    id="reference"
-                />
-                <InputError :message="errors.reference" />
-            </div>
-        </div>
-
-        <div class="row pb-3">
-            <div class="col-md-6">
-                <label for="working_description" class="form-label">Descrizione lavorazione</label>
-                <Textarea 
-                    class="w-100"
-                    v-model="form.working_description"
-                    id="working_description"
-                    :rows="3"
-                />
-                <InputError :message="errors.working_description" />
-            </div>
-            <div class="col-md-6">
-                <label for="extra_notes" class="form-label">Note supplementari</label>
-                <Textarea 
-                    class="w-100"
-                    v-model="form.extra_notes"
-                    id="extra_notes"
-                    :rows="3"
-                />
-                <InputError :message="errors.extra_notes" />
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row pb-3">
-            <div class="col-md-4">
-                <label for="" class="form-label">Numero lavorazione</label>
-                <InputText 
-                    class="w-100 text-end"
-                    v-model="form.working_id"
-                    id="working_id"
-                />
-                <InputError :message="errors.working_id" />
-            </div>
-            <div class="col-md-4">
-                <label for="" class="form-label">Data di consegna</label>
-                <DatePicker
-                    class="w-100"
-                    v-model="form.delivery_date"
-                    id="delivery_date"
-                />
-                <InputError :message="errors.delivery_date" />
-            </div>
-            <div class="col-md-4">
-                <label for="" class="form-label">Stato lavorazione</label>
-                <Select 
-                    class="w-100"
-                    v-model="form.working_status_id"
-                    :options="working_statuses"
-                    option-label="name"
-                    option-value="id"
-                    id="working_status"
-                />
-                <InputError :message="errors.working_status_id" />
-            </div>
-        </div>
-
-        <div class="row pb-3">
-            <div class="col-md-6">
-                <label for="payment_method" class="form-label">Metodo di pagamento</label>
-                <Select 
-                    class="w-100"
-                    v-model="form.payment_method"
-                    :options="payment_methods"
-                    option-label="name"
-                    option-value="id"
-                    id="payment_method"
-                    filter
-                    filter-placeholder="Cerca metodo di pagamento"
-                    show-clear
-                />
-                <InputError :message="errors.payment_method" />
-            </div>
-
-            <div class="col-md-6">
-                <label for="total_amount" class="form-label">Importo totale</label>
-                <InputNumber
-                    class="w-100"
-                    inputClass="text-end"
-                    v-model="form.total_amount"
-                    :min="0"
-                    :mode="'currency'"
-                    currency="EUR"
-                    id="total_amount"
-                />
-                <InputError :message="errors.total_amount" />
-            </div>
+            </FieldSet>
         </div>
     </div>
+
 </template>
-<style scoped>
-    
-</style>

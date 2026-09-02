@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('workings', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Customer::class)->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->nullable()->constrained('customers')->onDelete('cascade');
             $table->string('working_id');
             $table->foreignIdFor(\App\Models\WorkingStatus::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(\App\Models\Brand::class)->constrained()->onDelete('cascade');
             $table->string('reference')->nullable();
+            $table->date('acceptance_date')->default(now());
             $table->date('delivery_date')->nullable();
             $table->text('working_description')->nullable();
             $table->text('extra_notes')->nullable();

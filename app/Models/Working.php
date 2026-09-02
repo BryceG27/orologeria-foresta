@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
 
 class Working extends Model
 {
@@ -17,6 +18,7 @@ class Working extends Model
         'working_status_id',
         'brand_id',
         'reference',
+        'acceptance_date',
         'delivery_date',
         'working_description',
         'payment_method_id',

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,6 +22,17 @@ class Customer extends Model
         'custom_working_id',
         'notes'
     ];
+
+    public function findOrCreate(Request $request) : Customer {
+        $customer = SELF::where('name', $request->input('name'))
+                        ->where('surname', $request->input('surname'))
+                        ->first();
+
+        if(!$customer)
+            $customer = SELF::create($request->all());
+
+        return $customer;
+    }
 
     public static function validate(Request $request) {
         return $request->validate([

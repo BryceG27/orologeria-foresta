@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreWorkingRequest;
 use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\PaymentMethod;
 use App\Models\Working;
 use App\Models\WorkingStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -42,9 +44,38 @@ class WorkingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreWorkingRequest $request)
     {
         dd($request->all());
+
+        if(isset($request->customer_id))
+            $customer = Customer::find($request->input('customer_id'));
+        else
+            $customer = Customer::create($request->input('customer'));
+
+        // If the customer is a company, there could be one or more workings to be created
+        if($customer->is_company) {
+            foreach ($request->input('workings') as $working => $value) {
+                $working_customer = Customer::findOrCreate($request->input('customer'));
+
+                Working::create([
+                    'customer_id' => $working_customer->id,
+                    'company_id' => $customer->id,
+                    'working_status_id' => $working->working_status_id,
+                    'brand_id' => $working->brand_id,
+                    'reference' => $working->reference,
+                    'payment_method_id' => $working->payment_method_id,
+                    'notes' => $working->notes,
+                    'total_cost' => $working->total_cost,
+                    'acceptance_date' => Carbon::create($working->acceptance_date)->timezone('Europe/Rome'),
+                    'delivery_date' => $working->delivery_date ? Carbon::create($working->delivery_date)->timezone('Europe/Rome') : null,
+                    'working_description' => $working->working_description,
+                    'extra_notes' => $working->extra_notes
+                ]);
+            }
+        } else {
+
+        }
     }
 
     /**
