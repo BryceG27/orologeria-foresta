@@ -23,13 +23,16 @@ class Customer extends Model
         'notes'
     ];
 
-    public function findOrCreate(Request $request) : Customer {
-        $customer = SELF::where('name', $request->input('name'))
-                        ->where('surname', $request->input('surname'))
+    public static function findOrCreate(Array $customer_request) : Customer {
+        $customer = SELF::where('name', $customer_request['name'])
+                        ->where('surname', $customer_request['surname'])
                         ->first();
 
         if(!$customer)
-            $customer = SELF::create($request->all());
+            $customer = SELF::create([
+                        'name' => $customer_request['name'],
+                        'surname' => $customer_request['surname']
+                    ]);
 
         return $customer;
     }

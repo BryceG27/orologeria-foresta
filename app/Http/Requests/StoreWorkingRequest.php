@@ -43,7 +43,7 @@ class StoreWorkingRequest extends FormRequest
         ];
     }
 
-    public function message() : array {
+    public function messages() : array {
         return [
             'customer_id.exists' => 'Il cliente selezionato non esiste.',
             'customer.name.string' => 'Il nome del cliente deve essere una stringa.',

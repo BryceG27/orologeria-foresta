@@ -27,7 +27,7 @@ class Working extends Model
     ];
 
     public function status() : BelongsTo {
-        return $this->belongsTo(WorkingStatus::class);
+        return $this->belongsTo(WorkingStatus::class, 'working_status_id');
     }
 
     public function customer() : BelongsTo {
@@ -39,7 +39,7 @@ class Working extends Model
     }
 
     public function brand() : BelongsTo {
-        return $this->belongsTo(Brand::class)->withDeleted();
+        return $this->belongsTo(Brand::class);
     }
 
     public function paymentMethod() : BelongsTo {

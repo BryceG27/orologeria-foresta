@@ -14,19 +14,19 @@ class WorkingStatusSeeder extends Seeder
         $statuses = [
             [
                 'name' => 'Aperto',
-                'bs-color' => 'primary'
+                'bs_color' => 'primary'
             ],
             [
                 'name' => 'Attesa risposta',
-                'bs-color' => 'info'
+                'bs_color' => 'info'
             ],
             [
                 'name' => 'Chiuso',
-                'bs-color' => 'warning'
+                'bs_color' => 'warning'
             ],
             [
                 'name' => 'Consegnato',
-                'bs-color' => 'success'
+                'bs_color' => 'success'
             ],
         ];
 

@@ -45,7 +45,7 @@ const store_customer = ref(false);
                         filter
                     />
                 </InputGroup>
-                <!-- <InputError :message="errors." /> -->
+                <InputError :message="errors.customer_id" />
             </div>
         </div>
 
@@ -155,6 +155,7 @@ const store_customer = ref(false);
                     :current_customer_is_company="current_customer_is_company"
                     :working="working"
                     :brands="brands"
+                    :errors="errors.workings?.[index]"
                     :working_statuses="working_statuses"
                     :payment_methods="payment_methods"
                 />

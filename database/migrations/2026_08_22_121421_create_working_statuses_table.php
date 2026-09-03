@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('working_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('bs-color');
+            $table->string('bs_color');
             $table->timestamps();
         });
     }

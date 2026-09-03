@@ -4,6 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 
 import WorkingForm from './Components/WorkingForm.vue';
 import ProcessingButton from '@/Components/ProcessingButton.vue';
+import ErrorMessages from '@/Components/ErrorMessages.vue';
 import { computed, onMounted, watch } from "vue";
 
 const props = defineProps({
@@ -95,7 +96,6 @@ const submit = () => {
 </script>
 <template>
     <Head title="Nuova lavorazione" />
-
     <AuthenticatedLayout>
         <BaseBlock title="Nuova lavorazione" class="m-2">
             <template #options>
@@ -127,6 +127,8 @@ const submit = () => {
                     </Link>
                 </div>
             </template>
+
+            <ErrorMessages :errors="errors" />
 
             <WorkingForm
                 :current_customer_is_company="current_customer_is_company"

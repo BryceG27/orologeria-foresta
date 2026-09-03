@@ -27,7 +27,7 @@ const props = defineProps({
                 v-model="working.customer.name"
                 id="name"
             />
-            <!-- <InputError :message="errors.customer?.name" /> -->
+            <InputError :message="errors?.customer?.name" />
         </div>
         <div class="col-md-6">
             <label for="surname" class="form-label">Cognome Cliente</label>
@@ -36,7 +36,7 @@ const props = defineProps({
                 v-model="working.customer.surname"
                 id="surname"
             />
-            <!-- <InputError :message="errors.customer?.surname" /> -->
+            <InputError :message="errors?.customer?.surname" />
         </div>
     </div>
     <div class="row pb-3">
@@ -62,7 +62,7 @@ const props = defineProps({
                 v-model="working.reference"
                 id="reference"
             />
-            <!-- <InputError :message="errors.reference" /> -->
+            <InputError :message="errors?.reference" />
         </div>
     </div>
 
@@ -75,7 +75,7 @@ const props = defineProps({
                 id="working_description"
                 :rows="3"
             />
-            <!-- <InputError :message="errors.working_description" /> -->
+            <InputError :message="errors?.working_description" />
         </div>
         <div class="col-md-6">
             <label for="extra_notes" class="form-label">Note supplementari</label>
@@ -85,7 +85,7 @@ const props = defineProps({
                 id="extra_notes"
                 :rows="3"
             />
-            <!-- <InputError :message="errors.extra_notes" /> -->
+            <InputError :message="errors?.extra_notes" />
         </div>
     </div>
 
@@ -99,7 +99,7 @@ const props = defineProps({
                 v-model="working.working_id"
                 id="working_id"
             />
-            <!-- <InputError :message="errors.working_id" /> -->
+            <InputError :message="errors?.working_id" />
         </div>
         <div class="col-md-4">
             <label for="" class="form-label">Data di accettazione</label>
@@ -107,8 +107,9 @@ const props = defineProps({
                 class="w-100"
                 v-model="working.acceptance_date"
                 id="acceptance_date"
+                date-format="dd/mm/yy"
             />
-            <!-- <InputError :message="errors.acceptance_date" /> -->
+            <InputError :message="errors?.acceptance_date" />
         </div>
         <div class="col-md-4">
             <label for="" class="form-label">Stato lavorazione</label>
@@ -120,7 +121,7 @@ const props = defineProps({
                 option-value="id"
                 id="working_status"
             />
-            <!-- <InputError :message="errors.working_status_id" /> -->
+            <InputError :message="errors?.working_status_id" />
         </div>
     </div>
 
@@ -138,7 +139,7 @@ const props = defineProps({
                 filter-placeholder="Cerca metodo di pagamento"
                 show-clear
             />
-            <!-- <InputError :message="errors.payment_method_id" /> -->
+            <InputError :message="errors?.payment_method_id" />
         </div>
 
         <div class="col-md-4">
@@ -147,8 +148,9 @@ const props = defineProps({
                 class="w-100"
                 v-model="working.delivery_date"
                 id="delivery_date"
+                date-format="dd/mm/yy"
             />
-            <!-- <InputError :message="errors.acceptance_date" /> -->
+            <InputError :message="errors?.acceptance_date" />
         </div>
 
         <div class="col-md-4">
@@ -162,7 +164,7 @@ const props = defineProps({
                 currency="EUR"
                 id="total_cost"
             />
-            <!-- <InputError :message="errors.total_cost" /> -->
+            <InputError :message="errors?.total_cost" />
         </div>
     </div>
 </template>
