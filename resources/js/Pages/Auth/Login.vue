@@ -45,13 +45,13 @@ async function onSubmit() {
 <template>
     <!-- Page Content -->
     <Head title="Login" />
-    <BaseBackground image="/assets/media/photos/photo31@2x.jpg">
+    <BaseBackground image="/assets/media/photos/photo36@2x.jpg">
         <div class="row g-0 bg-primary-dark-op">
             <!-- Meta Info Section -->
             <div
                 class="hero-static col-lg-4 d-none d-lg-flex flex-column justify-content-center"
             >
-                <div class="p-4 p-xl-5 flex-grow-1 d-flex align-items-center">
+                <div class="p-4 p-xl-5 grow d-flex align-items-center">
                     <div class="w-100">
                         <Link
                         :href="route('dashboard')"
@@ -60,8 +60,7 @@ async function onSubmit() {
                         <span class="fw-normal">Orologeria </span>Foresta
                     </Link>
                     <p class="text-white-75 me-xl-8 mt-2">
-                        Welcome to your amazing app. Feel free to login and start managing
-                        your projects and clients.
+                        Benvenuto nel backoffice di Orologeria Foresta.
                     </p>
                 </div>
             </div>
@@ -114,11 +113,11 @@ async function onSubmit() {
                             <img src="/assets/media/various/Logo.png" alt="" class="rounded-3" style="width: 17rem">
                         </p>
                         <h1 class="fw-bold mb-2">Entra nel portale</h1>
-                        <p class="fw-medium text-muted">
+                        <!-- <p class="fw-medium text-muted">
                             Benvenuto, effettua il login o
                             <Link :href="{ name: 'auth-signup3' }">registrati</Link>
                             per creare un nuovo account.
-                        </p>
+                        </p> -->
                     </div>
                     <!-- END Header -->
 

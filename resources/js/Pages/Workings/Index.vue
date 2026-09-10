@@ -1,8 +1,8 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import NoItemsFound from '@/Components/NoItemsFound.vue';
-import { ref, computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -10,13 +10,16 @@ import InputText from 'primevue/inputtext';
 import Toast from 'primevue/toast';
 import MultiSelect from 'primevue/multiselect';
 import DatePicker from 'primevue/datepicker';
+import Select from 'primevue/select';
+import ContextMenu from 'primevue/contextmenu'; 
 
 import { FilterMatchMode } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
+import moment from 'moment';
+import Swal from 'sweetalert2';
 
 const toast = useToast();
 
-import moment from 'moment';
 
 const props = defineProps({
     flash : Object,
@@ -24,6 +27,58 @@ const props = defineProps({
     statuses : Array,
     workings : Array
 })
+
+const cm = ref();
+const selected_working = ref();
+const menuModel = ref([
+    {
+        label: 'Stampa',
+        icon: 'fa fa-print text-info',
+        class: 'p-2',
+        action : 'print',
+    },
+    {
+        separator: true,
+    },
+    {
+        label: 'Cancella',
+        icon: 'fa fa-trash text-danger',
+        class: 'p-2',
+        action : 'delete',
+        command: () => {
+            deleteWorking(selected_working);
+        }
+    }
+]);
+
+const deleteWorking = async (working) => {
+
+    const result = await Swal.fire({
+        icon: 'warning',
+        title: 'Sei sicuro?',
+        text: 'Stai per cancellare questa lavorazione',
+        showCancelButton: true,
+        confirmButtonText: 'Sì, cancella',
+        cancelButtonText: 'Annulla',
+    })
+
+    if(result.isConfirmed) {
+        useForm().delete(route('workings.destroy', { working: working.value.id }), {
+            onSuccess: () => {
+                toast.add({severity:'success', summary: 'Successo', detail: 'Lavorazione cancellata con successo', life: 3000});
+            },
+            onError: () => {
+                toast.add({severity:'error', summary: 'Errore', detail: 'Si è verificato un errore durante la cancellazione della lavorazione', life: 3000});
+            }
+        });
+    }
+
+    selected_working.value = null;
+};
+
+const onRowContextMenu = (event) => {
+    cm.value.show(event.originalEvent);
+};
 
 const filters = ref({
     working_id : { value : null, matchMode : FilterMatchMode.STARTS_WITH },
@@ -33,8 +88,25 @@ const filters = ref({
     delivery_date : { value : null, matchMode : FilterMatchMode.DATE_IS }
 })
 
-if(props.flash.success) {
-    toast.add({severity:'success', summary: 'Successo', detail: props.flash.success, life: 3000});
+watchEffect(() => {
+    if(props.flash.success) {
+        toast.add({severity:'success', summary: 'Successo', detail: props.flash.success, life: 3000});
+    }
+});
+
+const onCellEditComplete = (event) => {
+    let { data, newData, field } = event;
+
+    if(JSON.stringify(data) === JSON.stringify(newData))
+        return;
+
+    const form = useForm({...newData})
+
+    form.patch(route('workings.update', { working: data.id }), {
+        onSuccess: () => {
+            toast.add({severity:'success', summary: 'Successo', detail: 'Lavorazione aggiornata con successo', life: 3000});
+        }
+    })
 }
 
 </script>
@@ -55,6 +127,24 @@ if(props.flash.success) {
                 </Link>
             </template>
 
+            <ContextMenu ref="cm" :model="menuModel">
+                <template #item="{ item }">
+                    <Link 
+                        v-if="item.action === 'print'"
+                        class="link-dark p-2"
+                        :href="route('workings.show', selected_working?.id)"
+                    >
+                        <i class="fa fa-print me-2 link-info"></i>
+                        Stampa
+                    </Link>
+
+                    <button class="btn btn-link link-dark p-2" type="button" v-else>
+                        <i class="fa fa-trash me-2 link-danger"></i>
+                        Cancella
+                    </button>
+                </template>
+            </ContextMenu>
+
             <DataTable
                 :value="workings"
                 :paginator="true"
@@ -62,21 +152,15 @@ if(props.flash.success) {
                 :rows-per-page-options="[10, 25, 50]"
                 filterDisplay="menu"
                 v-model:filters="filters"
+                contextMenu 
+                v-model:contextMenuSelection="selected_working"
+                @rowContextmenu="onRowContextMenu"
+                editMode="cell"
+                @cell-edit-complete="onCellEditComplete"
             >
                 <template #empty>
                     <NoItemsFound message="Nessuna lavorazione trovata" />
                 </template>
-
-                <!-- <template #header>
-                    <div class="d-flex justify-content-end">
-                        <IconField>
-                            <InputIcon>
-                                <i class="fa fa-search" />
-                            </InputIcon>
-                            <InputText v-model="filters['global'].value" placeholder="Cerca lavorazione" />
-                        </IconField>
-                    </div>
-                </template> -->
 
                 <Column style="width: 5%" header="#" field="working_id" :showFilterMatchModes="false">
                     <template #body="{ data }">
@@ -181,6 +265,14 @@ if(props.flash.success) {
                     <template #filterapply="{ filterCallback }">
                         
                     </template>
+                    <template #editor="{ data, field }">
+                        <DatePicker 
+                            v-model="data.delivery_date" 
+                            appendTo="body" 
+                            class="w-100"
+                            date-format="dd/mm/yy"
+                        />
+                    </template>
                 </Column>
 
                 <Column style="width: 20%" header="Stato" field="status.name" filterField="working_status_id" :showFilterMatchModes="false" >
@@ -209,6 +301,16 @@ if(props.flash.success) {
                     </template>
                     <template #filterapply="{ filterCallback }">
                         
+                    </template>
+                    <template #editor="{ data, field }">
+                        <Select 
+                            v-model="data.working_status_id" 
+                            :options="statuses" 
+                            optionLabel="name" 
+                            optionValue="id" 
+                            appendTo="body" 
+                            class="w-100" 
+                        />
                     </template>
                 </Column>
             </DataTable>

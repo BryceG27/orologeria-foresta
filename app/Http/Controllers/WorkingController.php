@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreWorkingRequest;
+use App\Http\Requests\UpdateWorkingRequest;
 use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\PaymentMethod;
@@ -24,7 +25,7 @@ class WorkingController extends Controller
         return Inertia::render('Workings/Index', [
             'workings' => Working::with(['customer' => function($query) {
                 $query->select('id', DB::raw('CASE WHEN is_company THEN company_name ELSE CONCAT(name, " ", surname) END AS description'));
-            }, 'brand', 'status'])->orderBy('id', 'desc')->get(),
+            }, 'brand', 'status'])->orderBy('created_at', 'desc')->get(),
             'brands' => Brand::orderBy('name')->get(),
             'statuses' => WorkingStatus::all(),
         ]);
@@ -41,7 +42,7 @@ class WorkingController extends Controller
                 'working_id' => Working::max('working_id') + 1
             ]),
             'brands' => Brand::orderBy('name')->get(),
-            'customers' => Customer::get_customers()->get(),
+            'customers' => Customer::get_customers()->where('is_company', true)->get(),
             'working_statuses' => WorkingStatus::all(),
             'payment_methods' => PaymentMethod::all(), 
         ]);
@@ -95,7 +96,7 @@ class WorkingController extends Controller
                 'reference' => $request->workings[0]['reference'],
                 'payment_method_id' => $request->workings[0]['payment_method_id'],
                 'total_cost' => $request->workings[0]['total_cost'],
-                'acceptance_date' => Carbon::create($request->workings[0]['acceptance_date'])->timezone('Europe/Rome'),
+                'acceptance_date' => $request->acceptance_date ? Carbon::create($request->acceptance_date)->timezone('Europe/Rome') : now(),
                 'delivery_date' => $request->workings[0]['delivery_date'] ? Carbon::create($request->workings[0]['delivery_date'])->timezone('Europe/Rome') : null,
                 'working_description' => $request->workings[0]['working_description'],
                 'extra_notes' => $request->workings[0]['extra_notes']
@@ -118,15 +119,34 @@ class WorkingController extends Controller
      */
     public function edit(Working $working)
     {
-        //
+        return Inertia::render('Workings/Edit', [
+            'working' => $working,
+            'brands' => Brand::all(),
+            'customers' => Customer::get_customers()->where('is_company', false)->get(),
+            'working_statuses' => WorkingStatus::all(),
+            'payment_methods' => PaymentMethod::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Working $working)
+    public function update(UpdateWorkingRequest $request, Working $working)
     {
-        //
+        $working->update([
+            'working_id' => $request->working_id,
+            'working_status_id' => $request->working_status_id,
+            'brand_id' => $request->brand_id,
+            'reference' => $request->reference,
+            'payment_method_id' => $request->payment_method_id,
+            'total_cost' => $request->total_cost,
+            'acceptance_date' => $request->acceptance_date ? Carbon::create($request->acceptance_date)->timezone('Europe/Rome') : null,
+            'delivery_date' => $request->delivery_date ? Carbon::create($request->delivery_date)->timezone('Europe/Rome') : null,
+            'working_description' => $request->working_description,
+            'extra_notes' => $request->extra_notes
+        ]);
+        
+        return redirect()->route('workings.index')->with('success', "Lavorazione aggiornata con successo");
     }
 
     /**
@@ -134,6 +154,7 @@ class WorkingController extends Controller
      */
     public function destroy(Working $working)
     {
-        //
+        $working->delete();
+        return redirect()->route('workings.index')->with('success', "Lavorazione cancellata con successo");
     }
 }

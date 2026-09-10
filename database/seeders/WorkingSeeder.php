@@ -12,6 +12,6 @@ class WorkingSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Working::factory(10)->create();
     }
 }

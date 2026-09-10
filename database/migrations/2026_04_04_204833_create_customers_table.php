@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('phone', 50)->nullable();
             $table->string('notes')->nullable();
             $table->boolean('is_company')->default(false);
-            $table->boolean('active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

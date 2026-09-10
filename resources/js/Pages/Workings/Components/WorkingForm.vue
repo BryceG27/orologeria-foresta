@@ -12,7 +12,10 @@ import InputError from '@/Components/InputError.vue';
 import { ref } from "vue";
 
 const props = defineProps({
-    current_customer_is_company : Boolean,
+    current_customer_is_company : {
+        type: Boolean,
+        default: false
+    },
     brands: Array,
     customers: Array,
     errors: Object,
@@ -30,7 +33,7 @@ const store_customer = ref(false);
             <div class="col-md-6">
                 <label for="customer_id" class="form-label">Cliente</label>
                 <InputGroup>
-                    <button class="btn btn-alt-success" type="button" @click="store_customer = true">
+                    <button class="btn btn-alt-success" type="button" @click="store_customer = true" v-if="!form.id">
                         <i class="fa fa-plus"></i>
                     </button>
                     <Select 
@@ -41,10 +44,12 @@ const store_customer = ref(false);
                         optionValue="id"
                         class="w-100"
                         showClear
+                        :disabled="form.id != null"
                         empty-filter-message="Nessun cliente trovato"
                         filter
                     />
                 </InputGroup>
+
                 <InputError :message="errors.customer_id" />
             </div>
         </div>
@@ -145,6 +150,7 @@ const store_customer = ref(false);
             class="pb-3"
             v-for="(working, index) in form.workings"
             :key="index"
+            v-if="form.workings"
         >
             <FieldSet
                 :toggleable="current_customer_is_company && form.workings.length > 1" 
@@ -161,6 +167,16 @@ const store_customer = ref(false);
                 />
             </FieldSet>
         </div>
+
+        <WorkingCard 
+            :current_customer_is_company="current_customer_is_company"
+            :working="form"
+            :brands="brands"
+            :errors="errors"
+            :working_statuses="working_statuses"
+            :payment_methods="payment_methods"
+            v-else
+        />
     </div>
 
 </template>

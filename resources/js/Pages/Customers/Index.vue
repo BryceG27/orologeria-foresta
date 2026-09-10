@@ -11,12 +11,13 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import Popover from 'primevue/popover';
 import Chip from 'primevue/chip';
+import ContextMenu from 'primevue/contextmenu';
+
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import Swal from 'sweetalert2';
 
 const toast = useToast();
-
-import Swal from 'sweetalert2';
 
 const props = defineProps({
     customers : Array
@@ -27,7 +28,28 @@ const filters = ref({
 })
 
 const op = ref(null);
-const selectedCustomer = ref(null);
+const selected_customer = ref(null);
+const cm = ref(null);
+const menuModel = ref([
+    {
+        label: 'Modifica',
+        icon: 'fa fa-pen text-info',
+        action : 'edit',
+        class: 'p-2'
+    },
+    {
+        separator: true,
+    },
+    {
+        label: 'Cancella',
+        icon: 'fa fa-trash text-danger',
+        action : 'delete',
+        class: 'p-2',
+        command: () => {
+            deleteCustomer(selected_customer.value);
+        }
+    }
+]);
 
 const deleteCustomer = (customer) => {
     Swal.fire({
@@ -55,14 +77,7 @@ const deleteCustomer = (customer) => {
 }
 
 const onRowContextMenu = (event) => {
-    event.originalEvent.preventDefault();
-    
-    op.value.hide()
-    selectedCustomer.value = event.data;
-
-    nextTick(() => {
-        op.value.show(event.originalEvent);
-    });
+    cm.value.show(event.originalEvent);
 }
 
 </script>
@@ -85,7 +100,7 @@ const onRowContextMenu = (event) => {
 
             <Popover ref="op">
                 <Link
-                    :href="route('customers.edit', selectedCustomer?.id)"
+                    :href="route('customers.edit', selected_customer?.id)"
                     class="d-flex align-items-center gap-2"
                     style="width: 8rem"
                 >
@@ -98,7 +113,7 @@ const onRowContextMenu = (event) => {
                 <div
                     class="d-flex align-items-center gap-2"
                     style="width: 8rem; cursor: pointer;"
-                    @click="deleteCustomer(selectedCustomer)"
+                    @click="deleteCustomer(selected_customer)"
                 >
                     <button class="btn btn-sm btn-alt-danger">
                         <i class="fa fa-trash"></i>
@@ -107,13 +122,31 @@ const onRowContextMenu = (event) => {
                 </div>
             </Popover>
 
+            <ContextMenu ref="cm" :model="menuModel">
+                <template #item="{ item }">
+                    <Link 
+                        v-if="item.action === 'edit'"
+                        class="link-dark p-2"
+                        :href="route('customers.edit', selected_customer?.id)"
+                    >
+                        <i class="fa fa-pen me-2 link-info"></i>
+                        Modifica
+                    </Link>
+
+                    <button class="btn btn-link link-dark p-2" type="button" v-else>
+                        <i class="fa fa-trash me-2 link-danger"></i>
+                        Cancella
+                    </button>
+                </template>
+            </ContextMenu>
+
             <DataTable
                 :value="customers"
                 :paginator="true"
                 :rows="10"
                 :rows-per-page-options="[10, 25, 50]"
                 v-model:filters="filters"
-                v-model:contextMenuSelection="selectedCustomer"
+                v-model:contextMenuSelection="selected_customer"
                 @rowContextmenu="onRowContextMenu"
             >
                 <template #empty>

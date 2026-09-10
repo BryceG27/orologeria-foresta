@@ -52,6 +52,7 @@ const props = defineProps({
                 filter
                 filter-placeholder="Cerca marchio"
                 show-clear
+                :invalid="errors?.brand_id != null"
             />
             <InputError :message="errors?.brand_id" />
         </div>
@@ -61,6 +62,7 @@ const props = defineProps({
                 class="w-100"
                 v-model="working.reference"
                 id="reference"
+                :invalid="errors?.reference != null"
             />
             <InputError :message="errors?.reference" />
         </div>
@@ -74,6 +76,7 @@ const props = defineProps({
                 v-model="working.working_description"
                 id="working_description"
                 :rows="3"
+                :invalid="errors?.working_description != null"
             />
             <InputError :message="errors?.working_description" />
         </div>
@@ -84,6 +87,7 @@ const props = defineProps({
                 v-model="working.extra_notes"
                 id="extra_notes"
                 :rows="3"
+                :invalid="errors?.extra_notes != null"
             />
             <InputError :message="errors?.extra_notes" />
         </div>
@@ -98,6 +102,7 @@ const props = defineProps({
                 class="w-100 text-end"
                 v-model="working.working_id"
                 id="working_id"
+                :invalid="errors?.working_id != null"
             />
             <InputError :message="errors?.working_id" />
         </div>
@@ -108,6 +113,7 @@ const props = defineProps({
                 v-model="working.acceptance_date"
                 id="acceptance_date"
                 date-format="dd/mm/yy"
+                :invalid="errors?.acceptance_date != null"
             />
             <InputError :message="errors?.acceptance_date" />
         </div>
@@ -120,6 +126,7 @@ const props = defineProps({
                 option-label="name"
                 option-value="id"
                 id="working_status"
+                :invalid="errors?.working_status_id != null"
             />
             <InputError :message="errors?.working_status_id" />
         </div>
@@ -138,6 +145,7 @@ const props = defineProps({
                 filter
                 filter-placeholder="Cerca metodo di pagamento"
                 show-clear
+                :invalid="errors?.payment_method_id != null"
             />
             <InputError :message="errors?.payment_method_id" />
         </div>
@@ -149,6 +157,7 @@ const props = defineProps({
                 v-model="working.delivery_date"
                 id="delivery_date"
                 date-format="dd/mm/yy"
+                :invalid="errors?.delivery_date != null"
             />
             <InputError :message="errors?.acceptance_date" />
         </div>
@@ -163,6 +172,7 @@ const props = defineProps({
                 :mode="'currency'"
                 currency="EUR"
                 id="total_cost"
+                :invalid="errors?.total_cost != null"
             />
             <InputError :message="errors?.total_cost" />
         </div>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('extra_notes')->nullable();
             $table->foreignIdFor(\App\Models\PaymentMethod::class)->nullable()->constrained()->onDelete('cascade');
             $table->double('total_cost')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
