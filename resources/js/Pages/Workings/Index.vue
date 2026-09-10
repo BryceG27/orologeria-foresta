@@ -32,6 +32,12 @@ const cm = ref();
 const selected_working = ref();
 const menuModel = ref([
     {
+        label: 'Modifica',
+        icon: 'fa fa-pen text-primary',
+        class: 'p-2',
+        action : 'view',
+    },
+    {
         label: 'Stampa',
         icon: 'fa fa-print text-info',
         class: 'p-2',
@@ -129,14 +135,22 @@ const onCellEditComplete = (event) => {
 
             <ContextMenu ref="cm" :model="menuModel">
                 <template #item="{ item }">
-                    <Link 
-                        v-if="item.action === 'print'"
+                    <Link
+                        v-if="item.action === 'view'"
+                        class="link-dark p-2"
+                        :href="route('workings.edit', selected_working?.id)"
+                    >
+                        <i class="fa fa-pen me-2 link-info"></i>
+                        Modifica
+                    </Link>
+                    <a 
+                        v-else-if="item.action === 'print'"
                         class="link-dark p-2"
                         :href="route('workings.show', selected_working?.id)"
                     >
                         <i class="fa fa-print me-2 link-info"></i>
                         Stampa
-                    </Link>
+                    </a>
 
                     <button class="btn btn-link link-dark p-2" type="button" v-else>
                         <i class="fa fa-trash me-2 link-danger"></i>

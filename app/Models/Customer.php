@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,6 +36,14 @@ class Customer extends Model
                     ]);
 
         return $customer;
+    }
+
+    public function workings() : HasMany {
+        return $this->hasMany(Working::class);
+    }
+
+    public function associated_workings() : HasMany {
+        return $this->hasMany(Working::class, 'company_id');
     }
 
     public static function validate(Request $request) {

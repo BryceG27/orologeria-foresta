@@ -166,13 +166,17 @@ const onRowContextMenu = (event) => {
 
                 <Column header="Nome" style="min-width: 20rem">
                     <template #body="{ data }">
-                        <div class="d-flex justify-content-between align-items-center" v-if="data.is_company">
-                            {{ data.company_name }}
-                            <Chip label="Gioielleria" class="me-2" />
-                        </div>
-                        <span v-else>
-                            {{ data.name }} {{ data.surname }}
-                        </span>
+                        <Link
+                            :href="route('customers.edit', { customer : data.id })"
+                        >
+                            <div class="d-flex justify-content-between align-items-center" v-if="data.is_company">
+                                {{ data.company_name }}
+                                <Chip label="Gioielleria" class="me-2" />
+                            </div>
+                            <span v-else>
+                                {{ data.name }} {{ data.surname }}
+                            </span>
+                        </Link>
                     </template>
                 </Column>
                 <Column header="Email" field="email" />

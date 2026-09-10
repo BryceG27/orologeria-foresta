@@ -1,8 +1,7 @@
 <script setup>
 import InputText from 'primevue/inputtext';
 import Checkbox from 'primevue/checkbox';
-
-import { ref } from 'vue';
+import Textarea from 'primevue/textarea';
 
 const props = defineProps({
     form: Object,
@@ -93,14 +92,14 @@ const props = defineProps({
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4"></div>
-            <div class="col-md-4"></div>
+            <div class="col-md-12">
+                <label for="notes" class="form-label">Note</label>
+                <Textarea 
+                    class="w-100"
+                    id="notes"
+                    v-model="form.notes"
+                />
+            </div>
         </div>
     </div>
 </template>

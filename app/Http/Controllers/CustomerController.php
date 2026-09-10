@@ -33,7 +33,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -50,7 +50,11 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         return Inertia::render('Customers/Edit', [
-            'customer' => $customer,
+            'customer' => $customer->load(['workings' => function($query) {
+                $query->with('brand', 'status');
+            }, 'associated_workings' => function($query) {
+                $query->with('brand', 'status', 'customer');
+            }]),
         ]);
     }
 
