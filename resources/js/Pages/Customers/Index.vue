@@ -2,14 +2,13 @@
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import NoItemsFound from '@/Components/NoItemsFound.vue';
-import { ref, nextTick } from 'vue';
+import { ref } from 'vue';
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
-import Popover from 'primevue/popover';
 import Chip from 'primevue/chip';
 import ContextMenu from 'primevue/contextmenu';
 
@@ -27,7 +26,6 @@ const filters = ref({
     'global' : { value : null, matchMode : 'contains' }
 })
 
-const op = ref(null);
 const selected_customer = ref(null);
 const cm = ref(null);
 const menuModel = ref([
@@ -91,52 +89,30 @@ const onRowContextMenu = (event) => {
             <template #options>
                 <Link
                     :href="route('customers.create')"
-                    class="btn btn-sm btn-primary"
+                    class="btn btn-sm btn-alt-primary"
                 >
                     <i class="fa fa-plus me-1"></i>
                     Crea
                 </Link>
             </template>
 
-            <Popover ref="op">
-                <Link
-                    :href="route('customers.edit', selected_customer?.id)"
-                    class="d-flex align-items-center gap-2"
-                    style="width: 8rem"
-                >
-                    <button class="btn btn-sm btn-alt-primary">
-                        <i class="fa fa-pen"></i>
-                    </button>
-                    <span class="text-muted">Modifica</span>
-                </Link>
-                <hr />
-                <div
-                    class="d-flex align-items-center gap-2"
-                    style="width: 8rem; cursor: pointer;"
-                    @click="deleteCustomer(selected_customer)"
-                >
-                    <button class="btn btn-sm btn-alt-danger">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                    <span class="text-muted">Cancella</span>
-                </div>
-            </Popover>
-
             <ContextMenu ref="cm" :model="menuModel">
                 <template #item="{ item }">
-                    <Link 
-                        v-if="item.action === 'edit'"
-                        class="link-dark p-2"
-                        :href="route('customers.edit', selected_customer?.id)"
-                    >
-                        <i class="fa fa-pen me-2 link-info"></i>
-                        Modifica
-                    </Link>
-
-                    <button class="btn btn-link link-dark p-2" type="button" v-else>
-                        <i class="fa fa-trash me-2 link-danger"></i>
-                        Cancella
-                    </button>
+                    <div class="text-center">
+                        <Link 
+                            v-if="item.action === 'edit'"
+                            class="btn btn-link link-dark"
+                            :href="route('customers.edit', selected_customer?.id)"
+                        >
+                            <i class="fa fa-pen me-2 link-info"></i>
+                            Modifica
+                        </Link>
+    
+                        <button class="btn btn-link link-dark" type="button" v-else>
+                            <i class="fa fa-trash me-2 link-danger"></i>
+                            Cancella
+                        </button>
+                    </div>
                 </template>
             </ContextMenu>
 

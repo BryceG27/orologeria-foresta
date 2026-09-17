@@ -11,6 +11,11 @@ export default {
             to  : 'workings.index'
         },
         {
+            name : 'Ordini',
+            icon : 'si si-basket',
+            to  : 'orders.index'
+        },
+        {
             name : 'Configurazione',
             heading : true
         },
@@ -18,6 +23,11 @@ export default {
             name : 'Clienti',
             icon : 'si si-users',
             to  : 'customers.index'
+        },
+        {
+            name : 'Marchi',
+            icon : 'si si-tag',
+            to  : 'brands.index'
         }
     ],
 }

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkingController;
 use Illuminate\Support\Facades\Route;
@@ -20,8 +22,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('customers', CustomerController::class);
-
     Route::resource('workings', WorkingController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('brands', BrandController::class);
+    Route::put('brands/{brand}/restore', [BrandController::class, 'restore'])->name('brands.restore');
 });
 
 require __DIR__.'/auth.php';
