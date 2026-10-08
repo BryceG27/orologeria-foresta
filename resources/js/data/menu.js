@@ -16,6 +16,11 @@ export default {
             to  : 'orders.index'
         },
         {
+            name : 'DDT',
+            icon : 'fa fa-truck',
+            // to  : 'transport_documents.index'
+        },
+        {
             name : 'Configurazione',
             heading : true
         },
@@ -28,6 +33,11 @@ export default {
             name : 'Marchi',
             icon : 'si si-tag',
             to  : 'brands.index'
+        },
+        {
+            name : 'Officine',
+            icon : 'si si-wrench',
+            to  : 'workshops.index'
         }
     ],
 }

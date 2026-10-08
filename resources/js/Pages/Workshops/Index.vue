@@ -9,7 +9,6 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
-import Chip from 'primevue/chip';
 import ContextMenu from 'primevue/contextmenu';
 
 import Toast from 'primevue/toast';
@@ -19,14 +18,14 @@ import Swal from 'sweetalert2';
 const toast = useToast();
 
 const props = defineProps({
-    customers : Array
+    workshops : Array
 })
 
 const filters = ref({
     'global' : { value : null, matchMode : 'contains' }
 })
 
-const selected_customer = ref(null);
+const selected_workshop = ref(null);
 const cm = ref(null);
 const menuModel = ref([
     {
@@ -44,12 +43,12 @@ const menuModel = ref([
         action : 'delete',
         class: 'p-2',
         command: () => {
-            deleteCustomer(selected_customer.value);
+            deleteWorkshop(selected_workshop.value);
         }
     }
 ]);
 
-const deleteCustomer = (customer) => {
+const deleteWorkshop = (workshop) => {
     Swal.fire({
         title: 'Sei sicuro?',
         text: "Non potrai tornare indietro!",
@@ -62,12 +61,12 @@ const deleteCustomer = (customer) => {
     }).then((result) => {
         if (result.isConfirmed) {
             const form = useForm();
-            form.delete(route('customers.destroy', customer.id), {
+            form.delete(route('workshops.destroy', workshop.id), {
                 onSuccess : () => {
-                    toast.add({ severity: 'success', summary: 'Successo', detail: 'Cliente eliminato con successo.', life: 3000 });
+                    toast.add({ severity: 'success', summary: 'Successo', detail: 'Officina eliminato con successo.', life: 3000 });
                 },
                 onError : () => {
-                    toast.add({ severity: 'error', summary: 'Errore', detail: 'Si è verificato un errore durante l\'eliminazione del cliente.', life: 3000 });
+                    toast.add({ severity: 'error', summary: 'Errore', detail: 'Si è verificato un errore durante l\'eliminazione dell\'officina.', life: 3000 });
                 }
             });
         }
@@ -77,18 +76,17 @@ const deleteCustomer = (customer) => {
 const onRowContextMenu = (event) => {
     cm.value.show(event.originalEvent);
 }
-
 </script>
 <template>
-    <Head title="Clienti" />
+    <Head title="Officine" />
 
     <Toast />
 
     <AuthenticatedLayout>
-        <BaseBlock title="Clienti" class="m-2">
+        <BaseBlock title="Officine" class="m-2">
             <template #options>
                 <Link
-                    :href="route('customers.create')"
+                    :href="route('workshops.create')"
                     class="btn btn-sm btn-alt-primary"
                 >
                     <i class="fa fa-plus me-1"></i>
@@ -101,7 +99,7 @@ const onRowContextMenu = (event) => {
                     <Link 
                         v-if="item.action === 'edit'"
                         class="btn btn-link link-dark"
-                        :href="route('customers.edit', selected_customer?.id)"
+                        :href="route('workshops.edit', selected_workshop?.id)"
                     >
                         <i class="fa fa-pen me-2 link-info"></i>
                         Modifica
@@ -115,16 +113,16 @@ const onRowContextMenu = (event) => {
             </ContextMenu>
 
             <DataTable
-                :value="customers"
+                :value="workshops"
                 :paginator="true"
                 :rows="10"
                 :rows-per-page-options="[10, 25, 50]"
                 v-model:filters="filters"
-                v-model:contextMenuSelection="selected_customer"
+                v-model:contextMenuSelection="selected_workshop"
                 @rowContextmenu="onRowContextMenu"
             >
                 <template #empty>
-                    <NoItemsFound message="Nessun cliente trovato" icon="fa fa-users-slash" />
+                    <NoItemsFound message="Nessuna officina trovata" icon="fa fa-wrench" />
                 </template>
 
                 <template #header>
@@ -133,26 +131,21 @@ const onRowContextMenu = (event) => {
                             <InputIcon>
                                 <i class="fa fa-search" />
                             </InputIcon>
-                            <InputText v-model="filters['global'].value" placeholder="Cerca cliente" />
+                            <InputText v-model="filters['global'].value" placeholder="Cerca officina" />
                         </IconField>
                     </div>
                 </template>
 
-                <Column header="Nome" style="min-width: 20rem">
+                <Column header="Nome" style="min-width: 8.5rem">
                     <template #body="{ data }">
                         <Link
-                            :href="route('customers.edit', { customer : data.id })"
+                            :href="route('workshops.edit', { workshop : data.id })"
                         >
-                            <div class="d-flex justify-content-between align-items-center" v-if="data.is_company">
-                                {{ data.company_name }}
-                                <Chip label="Gioielleria" class="me-2" />
-                            </div>
-                            <span v-else>
-                                {{ data.name }} {{ data.surname }}
-                            </span>
+                            {{ data.name }}
                         </Link>
                     </template>
                 </Column>
+                <Column header="Indirizzo" field="address" />
                 <Column header="Email" field="email" />
                 <Column header="Telefono" field="phone" />
                 <Column header="Note" field="notes" />
@@ -160,3 +153,6 @@ const onRowContextMenu = (event) => {
         </BaseBlock>
     </AuthenticatedLayout>
 </template>
+<style scoped>
+    
+</style>
