@@ -12,6 +12,7 @@ import MultiSelect from 'primevue/multiselect';
 import DatePicker from 'primevue/datepicker';
 import Select from 'primevue/select';
 import ContextMenu from 'primevue/contextmenu'; 
+import Tag from 'primevue/tag';
 
 import { FilterMatchMode } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
@@ -176,7 +177,7 @@ const onCellEditComplete = (event) => {
                     <NoItemsFound message="Nessuna lavorazione trovata" />
                 </template>
 
-                <Column style="width: 5%" header="#" field="working_id" :showFilterMatchModes="false">
+                <Column style="width: 5%" header="#" field="working_id">
                     <template #body="{ data }">
                         <div class="text-center">
                             <Link
@@ -184,24 +185,6 @@ const onCellEditComplete = (event) => {
                                 v-text="data.working_id"
                             />
                         </div>
-                    </template>
-                    <template #filter="{ filterModel, filterCallback }">
-                        <InputText 
-                            v-model="filterModel.value" 
-                            type="text" 
-                            @input="filterCallback()" 
-                            placeholder="Cerca #" 
-                            class="w-100"
-                        />
-                    </template>
-                    <template #filterclear="{ filterCallback }">
-                        <button class="btn btn-sm btn-alt-danger" @click="filterCallback()">
-                            <i class="fa fa-times me-1"></i>
-                            Cancella
-                        </button>  
-                    </template>
-                    <template #filterapply="{ filterCallback }">
-                        
                     </template>
                 </Column>
 
@@ -223,10 +206,9 @@ const onCellEditComplete = (event) => {
                         />
                     </template>
                     <template #filterclear="{ filterCallback }">
-                        <button class="btn btn-sm btn-alt-danger" @click="filterCallback()">
-                            <i class="fa fa-times me-1"></i>
-                            Cancella
-                        </button>  
+                        <button class="btn btn-sm btn-filter btn-alt-danger" @click="filterCallback()">
+                            <i class="fa fa-times"></i>
+                        </button> 
                     </template>
                     <template #filterapply="{ filterCallback }">
                         
@@ -247,9 +229,8 @@ const onCellEditComplete = (event) => {
                         />
                     </template>
                     <template #filterclear="{ filterCallback }">
-                        <button class="btn btn-sm btn-alt-danger" @click="filterCallback()">
-                            <i class="fa fa-times me-1"></i>
-                            Cancella
+                        <button class="btn btn-sm btn-filter btn-alt-danger" @click="filterCallback()">
+                            <i class="fa fa-times"></i>
                         </button>  
                     </template>
                     <template #filterapply="{ filterCallback }">
@@ -271,9 +252,8 @@ const onCellEditComplete = (event) => {
                         />
                     </template>
                     <template #filterclear="{ filterCallback }">
-                        <button class="btn btn-sm btn-alt-danger" @click="filterCallback()">
-                            <i class="fa fa-times me-1"></i>
-                            Cancella
+                        <button class="btn btn-sm btn-filter btn-alt-danger" @click="filterCallback()">
+                            <i class="fa fa-times"></i>
                         </button>  
                     </template>
                     <template #filterapply="{ filterCallback }">
@@ -291,9 +271,10 @@ const onCellEditComplete = (event) => {
 
                 <Column style="width: 20%" header="Stato" field="status.name" filterField="working_status_id" :showFilterMatchModes="false" >
                     <template #body="{ data }">
-                        <span :class="`badge rounded-pill p-2 bg-${data.status.bs_color}`">
-                            {{ data.status.name }}
-                        </span>
+                        <Tag 
+                            v-text="data.status.name"
+                            :severity="data.status.bs_color"
+                        />
                     </template>
                     <template #filter="{ filterModel, filterCallback }">
                         <MultiSelect 
@@ -308,9 +289,8 @@ const onCellEditComplete = (event) => {
                         />
                     </template>
                     <template #filterclear="{ filterCallback }">
-                        <button class="btn btn-sm btn-alt-danger" @click="filterCallback()">
-                            <i class="fa fa-times me-1"></i>
-                            Cancella
+                        <button class="btn btn-sm btn-filter btn-alt-danger" @click="filterCallback()">
+                            <i class="fa fa-times"></i>
                         </button>  
                     </template>
                     <template #filterapply="{ filterCallback }">
@@ -331,3 +311,8 @@ const onCellEditComplete = (event) => {
         </BaseBlock>
     </AuthenticatedLayout>
 </template>
+<style scoped>
+    .btn-filter {
+        width: 2.5rem;
+    }
+</style>

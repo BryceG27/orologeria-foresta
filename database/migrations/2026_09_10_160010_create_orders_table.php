@@ -17,10 +17,12 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\OrderStatus::class)->default(1)->constrained()->onDelete('cascade');
             $table->foreignIdFor(\App\Models\PaymentOrderStatus::class)->default(1)->constrained()->onDelete('cascade');
             $table->foreignIdFor(\App\Models\Brand::class)->nullable()->constrained();
-            $table->text('description');
+            $table->string('description');
+            $table->text('notes')->nullable();
             $table->date('order_date');
             $table->decimal('downpayment', 10, 2)->default(0);
             $table->decimal('total', 10, 2)->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

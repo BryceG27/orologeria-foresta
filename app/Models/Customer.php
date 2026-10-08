@@ -46,6 +46,10 @@ class Customer extends Model
         return $this->hasMany(Working::class, 'company_id');
     }
 
+    public function orders() : HasMany {
+        return $this->hasMany(Order::class);
+    }
+
     public static function validate(Request $request) {
         return $request->validate([
             'name' => 'required_if:is_company,false|string|max:255',

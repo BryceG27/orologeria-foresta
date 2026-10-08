@@ -5,7 +5,8 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 
 import OrderForm from './Components/OrderForm.vue';
 
-defineProps({
+const props = defineProps({
+    order : Object,
     brands : Array,
     customers : Array,
     statuses : Array,
@@ -14,28 +15,23 @@ defineProps({
 })
 
 const form = useForm({
-    brand_id : null,
-    description : '',
-    customer_id : null,
-    customer : {
-        name : '',
-        surname : '',
-        email: null,
-        phone: null
-    },
-    order_date : new Date(),
-    downpayment : 0,
-    total : 0,
-    order_status_id : 1,
-    payment_order_status_id : null
+    id : props.order.id,
+    brand_id : props.order.brand_id,
+    description : props.order.description,
+    customer_id : props.order.customer_id,
+    order_date : props.order.order_date,
+    downpayment : props.order.downpayment,
+    total : props.order.total,
+    order_status_id : props.order.order_status_id,
+    payment_order_status_id : props.order.payment_order_status_id
 });
 
 const submit = () => {
-    form.post(route('orders.store'));
+    form.patch(route('orders.update', { order: form.id }));
 };
 </script>
 <template>
-    <Head title="Nuovo ordine" />
+    <Head title="Modifica ordine #{{ props.order.id }}" />
 
     <AuthenticatedLayout>
         <BaseBlock title="Nuovo ordine" class="m-2">

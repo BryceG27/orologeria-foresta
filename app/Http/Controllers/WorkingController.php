@@ -10,8 +10,6 @@ use App\Models\PaymentMethod;
 use App\Models\Working;
 use App\Models\WorkingStatus;
 use Carbon\Carbon;
-use Illuminate\Cache\Events\WritingKey;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -41,8 +39,8 @@ class WorkingController extends Controller
                 'working_status_id' => 1,
                 'working_id' => Working::max('working_id') + 1
             ]),
-            'brands' => Brand::orderBy('name')->get(),
-            'customers' => Customer::get_customers()->where('is_company', true)->get(),
+            'brands' => Brand::reorder()->get()->sortBy('name'),
+            'customers' => Customer::get_customers()->get(),
             'working_statuses' => WorkingStatus::all(),
             'payment_methods' => PaymentMethod::all(), 
         ]);

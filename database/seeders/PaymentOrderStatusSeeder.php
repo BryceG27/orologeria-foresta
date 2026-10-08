@@ -18,11 +18,11 @@ class PaymentOrderStatusSeeder extends Seeder
             ],
             [
                 'name' => 'Deve pagare',
-                'bs_color' => 'warning'
+                'bs_color' => 'danger'
             ],
             [
                 'name' => 'Acconto',
-                'bs_color' => 'secondary'
+                'bs_color' => 'warn'
             ],
         ];
 

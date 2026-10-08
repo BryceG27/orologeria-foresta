@@ -22,7 +22,7 @@ class WorkingStatusSeeder extends Seeder
             ],
             [
                 'name' => 'Chiuso',
-                'bs_color' => 'warning'
+                'bs_color' => 'warn'
             ],
             [
                 'name' => 'Consegnato',
