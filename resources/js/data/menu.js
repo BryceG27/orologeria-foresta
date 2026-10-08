@@ -18,7 +18,7 @@ export default {
         {
             name : 'DDT',
             icon : 'fa fa-truck',
-            // to  : 'transport_documents.index'
+            to  : 'transport-documents.index'
         },
         {
             name : 'Configurazione',

@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Http\Request;
 
 class Working extends Model
 {
@@ -45,5 +45,9 @@ class Working extends Model
 
     public function paymentMethod() : BelongsTo {
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function transportDocuments() : BelongsToMany {
+        return $this->belongsToMany(TransportDocument::class);
     }
 }

@@ -65,6 +65,8 @@ class WorkshopController extends Controller
      */
     public function destroy(Workshop $workshop)
     {
+        if($workshop->has('transport_documents'))
+            return redirect()->route('workshops.index')->withErrors(['Impossibile eliminare l\'officina perché ha documenti di trasporto associati.']);
         $workshop->delete();
 
         return redirect()->route('workshops.index')->with('success', 'Officina eliminata con successo');

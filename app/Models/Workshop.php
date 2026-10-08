@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,10 @@ class Workshop extends Model
         'email',
         'notes',
     ];
+
+    public function documents() : HasMany {
+        return $this->hasMany(TransportDocument::class);
+    }
 
     public static function validate(Request $request) {
         return $request->validate([

@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::put('brands/{brand}/restore', [BrandController::class, 'restore'])->name('brands.restore');
 
     Route::resource('workshops', WorkshopController::class);
-    // Route::resource('transport_documents', TransportDocumentController::class);
+    Route::resource('transport-documents', TransportDocumentController::class);
 });
 
 require __DIR__.'/auth.php';

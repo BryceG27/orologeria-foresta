@@ -22,7 +22,7 @@ import { ref } from 'vue';
 
 const toast = useToast();
 
-const selected_order = ref(null);
+const selected_document = ref(null);
 const cm = ref(null);
 
 const menuModel = ref([
@@ -47,17 +47,16 @@ const menuModel = ref([
         class: 'p-2',
         action : 'delete',
         command: () => {
-            deleteDocument(selected_order.value);
+            deleteDocument(selected_document.value);
         }
     }
 ]);
 
-const props = defineProps({
-    transport_documents : Array
+defineProps({
+    documents : Array
 })
 
 const filters = ref({
-    'customer.description' : { value: null, matchMode: FilterMatchMode.CONTAINS },
     'status.id' : { value: null, matchMode: FilterMatchMode.IN }
 });
 
@@ -73,14 +72,14 @@ const onCellEditComplete = (event) => {
 
     const form = useForm({...newData})
 
-    form.patch(route('orders.update', { order: data.id }), {
+    form.patch(route('transport-documents.update', { document: data.id }), {
         onSuccess: () => {
-            toast.add({severity:'success', summary: 'Successo', detail: 'Ordine aggiornato con successo', life: 3000});
+            toast.add({severity:'success', summary: 'Successo', detail: 'DDT aggiornato con successo', life: 3000});
         }
     })
 }
 
-const deleteDocument = (order) => {
+const deleteDocument = (document) => {
     const form = useForm({});
 
     Swal.fire({
@@ -94,7 +93,7 @@ const deleteDocument = (order) => {
         cancelButtonText: 'Annulla'
     }).then((result) => {
         if (result.isConfirmed) {
-            /* form.delete(route('orders.destroy', { order: order.id }), {
+            /* form.delete(route('documents.destroy', { document: document.id }), {
                 onSuccess: () => {
                     toast.add({severity:'success', summary: 'Successo', detail: 'DDT cancellato con successo', life: 3000});
                 },
@@ -107,9 +106,70 @@ const deleteDocument = (order) => {
 }
 </script>
 <template>
-    <div>
-        
-    </div>
+    <Head title="DDT" />
+
+    <Toast />
+
+    <AuthenticatedLayout>
+        <BaseBlock title="DDT" class="m-2">
+            <template #options>
+                <Link
+                    :href="route('transport-documents.create')"
+                    class="btn btn-sm btn-alt-primary"
+                >
+                    <i class="fa fa-plus me-1"></i>
+                    Crea
+                </Link>
+            </template>
+
+            <ContextMenu ref="cm" :model="menuModel">
+                <template #item="{ item }">
+                    <Link 
+                        v-if="item.action === 'edit'"
+                        class="btn btn-link link-dark"
+                        :href="route('transport-documents.edit', selected_document?.id)"
+                    >
+                        <i class="fa fa-pen me-2 link-info"></i>
+                        Modifica
+                    </Link>
+
+                    <button class="btn btn-link link-dark" type="button" v-else>
+                        <i class="fa fa-trash me-2 link-danger"></i>
+                        Cancella
+                    </button>
+                </template>
+            </ContextMenu>
+
+            <DataTable
+                :value="documents"
+                :paginator="true"
+                :rows="10"
+                :rows-per-page-options="[10, 25, 50]"
+                v-model:filters="filters"
+                v-model:contextMenuSelection="selected_document"
+                @rowContextmenu="onRowContextMenu"
+            >
+                <template #empty>
+                    <NoItemsFound message="Nessun DDT trovato" icon="fa fa-inbox" />
+                </template>
+
+                <Column field="id" header="ID" />
+                <Column field="workshop.name" header="Officina"></Column>
+                <Column header="Lavorazioni">
+                    <template #body="{ data }">
+                        <ul>
+                            <li v-for="work in data.workings" :key="work.id">{{ work.name }}</li>
+                        </ul>
+                    </template>
+                </Column>
+                <Column field="date" header="Data di creazione">
+                    <template #body="{ data }">
+                        {{ moment(data.date).format('DD/MM/YYYY') }}
+                    </template>
+                </Column>
+            </DataTable>
+        </BaseBlock>
+    </AuthenticatedLayout>
 </template>
 <style scoped>
     

@@ -127,7 +127,7 @@ const onCellEditComplete = (event) => {
             <template #options>
                 <Link
                     :href="route('workings.create')"
-                    class="btn btn-sm btn-primary"
+                    class="btn btn-sm btn-alt-primary"
                 >
                     <i class="fa fa-plus me-1"></i>
                     Crea
