@@ -21,11 +21,11 @@ class OrderController extends Controller
     {
         return Inertia::render('Orders/Index', [
             'brands' => Brand::orderBy('name')->get(),
-            'orders' => Order::with(['customer' => function($query) {
-                                    $query->select('id', 'name', 'surname', DB::raw('CONCAT(name, " ", surname) as description'));
-                                }, 'status', 'payment_status', 'brand'])
-                                ->orderBy('id', 'desc')
-                                ->get(),
+            'orders' => Order::with(['customer' => function ($query) {
+                $query->select('id', 'name', 'surname', DB::raw('CONCAT(name, " ", surname) as description'));
+            }, 'status', 'payment_status', 'brand'])
+                ->orderBy('id', 'desc')
+                ->get(),
             'statuses' => OrderStatus::all(),
             'payment_statuses' => PaymentOrderStatus::all()
         ]);
@@ -52,12 +52,12 @@ class OrderController extends Controller
     {
         $data = Order::validate($request);
 
-        if(isset($data['customer']['name'])) {
+        if (isset($data['customer']['name'])) {
             $customer = Customer::where(DB::raw('LOWER(name)'), strtolower($data['customer']['name']))
-                                ->where(DB::raw('LOWER(surname)'), strtolower($data['customer']['surname']))
-                                ->first();
+                ->where(DB::raw('LOWER(surname)'), strtolower($data['customer']['surname']))
+                ->first();
 
-            if(!$customer) {
+            if (!$customer) {
                 $customer = Customer::create([
                     'name' => $data['customer']['name'],
                     'surname' => $data['customer']['surname'],
@@ -69,12 +69,10 @@ class OrderController extends Controller
             $customer = Customer::find($data['customer_id']);
         }
 
-        dd($data);
-
         $data['order_date'] = Carbon::create($data['order_date'])->setTimezone('Europe/Rome');
 
         $customer->orders()->create($data);
-        
+
         return redirect()->route('orders.index')->with('success', 'Ordine creato correttamente.');
     }
 

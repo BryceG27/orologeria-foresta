@@ -131,6 +131,10 @@ class WorkingController extends Controller
      */
     public function update(UpdateWorkingRequest $request, Working $working)
     {
+        //update delivery_date to now() if the new working_status_id is 4 (delivered)
+        if ($request->working_status_id == 4 && $working->working_status_id != 4 && !$working->delivery_date)
+            $request->merge(['delivery_date' => Carbon::now()->timezone('Europe/Rome')]);
+
         $working->update([
             'working_id' => $request->working_id,
             'working_status_id' => $request->working_status_id,

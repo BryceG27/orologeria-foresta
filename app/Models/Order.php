@@ -13,6 +13,7 @@ class Order extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'payment_order_status_id',
         'customer_id',
         'order_status_id',
         'brand_id',
@@ -23,7 +24,8 @@ class Order extends Model
         'total',
     ];
 
-    public static function validate(Request $request) {
+    public static function validate(Request $request)
+    {
         return $request->validate([
             'customer.name' => [Rule::requiredIf($request->customer_id == null)],
             'customer.surname' => [Rule::requiredIf($request->customer_id == null)],
@@ -31,6 +33,7 @@ class Order extends Model
             'customer.phone' => 'nullable|string',
             'customer_id' => [Rule::requiredIf($request->name == null && $request->surname == null), 'exists:customers,id'],
             'order_status_id' => 'required|exists:order_statuses,id',
+            'payment_order_status_id' => 'required|exists:payment_order_statuses,id',
             'brand_id' => 'nullable|exists:brands,id',
             'description' => 'required|string',
             'notes' => 'nullable|string',
@@ -41,25 +44,30 @@ class Order extends Model
             'customer.name.required_if' => 'Il nome è obbligatorio in caso di mancata scelta del cliente.',
             'customer.surname.required_if' => 'Il cognome è obbligatorio in caso di mancata scelta del cliente.',
             'company_name.required_if' => 'La ragione sociale è obbligatoria in caso di mancata scelta del cliente.',
+            'payment_order_status_id.required' => 'Lo stato del pagamento è obbligatorio.',
             'customer_id.required_if' => 'La selezione del cliente è obbligatoria se non sono stati forniti nome, cognome e ragione sociale.',
             'customer_id.exists' => 'Il cliente selezionato non esiste.',
             'description.required' => 'La descrizione del prodotto ordinato è obbligatoria.',
         ]);
     }
 
-    public function customer() : BelongsTo {
+    public function customer(): BelongsTo
+    {
         return $this->belongsTo(Customer::class);
     }
 
-    public function status() : BelongsTo {
+    public function status(): BelongsTo
+    {
         return $this->belongsTo(OrderStatus::class, 'order_status_id');
     }
 
-    public function payment_status() : BelongsTo {
+    public function payment_status(): BelongsTo
+    {
         return $this->belongsTo(PaymentOrderStatus::class, 'payment_order_status_id');
     }
 
-    public function brand() : BelongsTo {
+    public function brand(): BelongsTo
+    {
         return $this->belongsTo(Brand::class);
     }
 }
