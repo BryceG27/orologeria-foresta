@@ -21,7 +21,7 @@ class WorkingController extends Controller
     public function index()
     {
         return Inertia::render('Workings/Index', [
-            'workings' => Working::with(['customer' => function($query) {
+            'workings' => Working::with(['customer' => function ($query) {
                 $query->select('id', DB::raw('CASE WHEN is_company THEN company_name ELSE CONCAT(name, " ", surname) END AS description'));
             }, 'brand', 'status'])->orderBy('created_at', 'desc')->get(),
             'brands' => Brand::orderBy('name')->get(),
@@ -39,10 +39,10 @@ class WorkingController extends Controller
                 'working_status_id' => 1,
                 'working_id' => Working::max('working_id') + 1
             ]),
-            'brands' => Brand::reorder()->get()->sortBy('name'),
+            'brands' => Brand::orderBy('name')->get(),
             'customers' => Customer::get_customers()->get(),
             'working_statuses' => WorkingStatus::all(),
-            'payment_methods' => PaymentMethod::all(), 
+            'payment_methods' => PaymentMethod::all(),
         ]);
     }
 
@@ -51,21 +51,21 @@ class WorkingController extends Controller
      */
     public function store(StoreWorkingRequest $request)
     {
-        if(isset($request->customer_id))
+        if (isset($request->customer_id))
             $customer = Customer::find($request->input('customer_id'));
         else
             $customer = Customer::create($request->input('customer'));
 
         // If the customer is a company, there could be one or more workings to be created
-        if($customer->is_company) {
+        if ($customer->is_company) {
             foreach ($request->input('workings') as $working) {
                 $working_customer = Customer::findOrCreate($working['customer']);
 
-                if($working['working_id'])
+                if ($working['working_id'])
                     $working_id = $working['working_id'];
-                else if($customer->custom_working_id)
+                else if ($customer->custom_working_id)
                     $working_id = (Working::where('company_id', $customer->id)->orderBy('working_id', 'desc')->first()->working_id ?? $customer->custom_working_id) + 1;
-                else 
+                else
                     $working_id = $working['working_id'] ?? Working::max('working_id') + 1;
 
 
@@ -119,7 +119,7 @@ class WorkingController extends Controller
     {
         return Inertia::render('Workings/Edit', [
             'working' => $working,
-            'brands' => Brand::all(),
+            'brands' => Brand::orderBy('name')->get(),
             'customers' => Customer::get_customers()->where('is_company', false)->get(),
             'working_statuses' => WorkingStatus::all(),
             'payment_methods' => PaymentMethod::all(),
@@ -143,7 +143,7 @@ class WorkingController extends Controller
             'working_description' => $request->working_description,
             'extra_notes' => $request->extra_notes
         ]);
-        
+
         return redirect()->route('workings.index')->with('success', "Lavorazione aggiornata con successo");
     }
 

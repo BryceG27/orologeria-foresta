@@ -1,31 +1,30 @@
 <script setup>
-import InputText from 'primevue/inputtext';
-import Select from 'primevue/select';
-import InputGroup from 'primevue/inputgroup';
-import InputGroupAddon from 'primevue/inputgroupaddon';
-import Button from 'primevue/button';
-import Checkbox from 'primevue/checkbox';
-import FieldSet from 'primevue/fieldset';
+import InputText from "primevue/inputtext";
+import Select from "primevue/select";
+import InputGroup from "primevue/inputgroup";
+import InputGroupAddon from "primevue/inputgroupaddon";
+import Button from "primevue/button";
+import Checkbox from "primevue/checkbox";
+import FieldSet from "primevue/fieldset";
 
-import WorkingCard from './WorkingCard.vue';
-import InputError from '@/Components/InputError.vue';
+import WorkingCard from "./WorkingCard.vue";
+import InputError from "@/Components/InputError.vue";
 import { ref } from "vue";
 
 const props = defineProps({
-    current_customer_is_company : {
+    current_customer_is_company: {
         type: Boolean,
-        default: false
+        default: false,
     },
-    brands: Array,
+    brands: Object,
     customers: Array,
     errors: Object,
-    form : Object,
+    form: Object,
     payment_methods: Array,
     working_statuses: Array,
-})
+});
 
 const store_customer = ref(false);
-
 </script>
 <template>
     <div class="container-fluid">
@@ -33,13 +32,18 @@ const store_customer = ref(false);
             <div class="col-md-6">
                 <label for="customer_id" class="form-label">Cliente</label>
                 <InputGroup>
-                    <button class="btn btn-alt-success" type="button" @click="store_customer = true" v-if="!form.id">
+                    <button
+                        class="btn btn-alt-success"
+                        type="button"
+                        @click="store_customer = true"
+                        v-if="!form.id"
+                    >
                         <i class="fa fa-plus"></i>
                     </button>
-                    <Select 
+                    <Select
                         inputId="customer_id"
-                        v-model="form.customer_id" 
-                        :options="customers" 
+                        v-model="form.customer_id"
+                        :options="customers"
                         optionLabel="description"
                         optionValue="id"
                         class="w-100"
@@ -65,10 +69,13 @@ const store_customer = ref(false);
                     <div class="col-md-4">
                         <label for="name" class="form-label">Nome</label>
                         <InputGroup>
-                            <button class="btn btn-alt-danger" @click="store_customer = false">
+                            <button
+                                class="btn btn-alt-danger"
+                                @click="store_customer = false"
+                            >
                                 <i class="fa fa-minus"></i>
                             </button>
-                            <InputText 
+                            <InputText
                                 class="w-100"
                                 v-model="form.customer.name"
                                 id="name"
@@ -78,7 +85,7 @@ const store_customer = ref(false);
                     </div>
                     <div class="col-md-4">
                         <label for="surname" class="form-label">Cognome</label>
-                        <InputText 
+                        <InputText
                             class="w-100"
                             v-model="form.customer.surname"
                             id="surname"
@@ -89,33 +96,47 @@ const store_customer = ref(false);
 
                 <template v-else>
                     <div class="col-md-4">
-                        <label for="company_name" class="form-label">Nome Gioielleria</label>
+                        <label for="company_name" class="form-label"
+                            >Nome Gioielleria</label
+                        >
                         <InputGroup>
                             <InputGroupAddon>
-                                <Button icon="fa fa-minus" severity="danger" @click="store_customer = false" />
+                                <Button
+                                    icon="fa fa-minus"
+                                    severity="danger"
+                                    @click="store_customer = false"
+                                />
                             </InputGroupAddon>
-                            <InputText 
+                            <InputText
                                 class="w-100"
                                 v-model="form.customer.company_name"
                                 id="company_name"
                             />
-                            <InputError :message="errors.customer?.company_name" />
+                            <InputError
+                                :message="errors.customer?.company_name"
+                            />
                         </InputGroup>
                     </div>
                     <div class="col-md-4">
-                        <label for="custom_working_id" class="form-label">ID lavorazione personalizzato</label>
-                        <InputText 
+                        <label for="custom_working_id" class="form-label"
+                            >ID lavorazione personalizzato</label
+                        >
+                        <InputText
                             class="w-100"
                             v-model="form.customer.custom_working_id"
                             id="custom_working_id"
                         />
-                        <InputError :message="errors.customer?.custom_working_id" />
+                        <InputError
+                            :message="errors.customer?.custom_working_id"
+                        />
                     </div>
                 </template>
 
                 <div class="col-md-4 d-flex flex-column gap-2">
-                    <label for="is_company" class="form-label">E' una gioielleria?</label>
-                    <Checkbox 
+                    <label for="is_company" class="form-label"
+                        >E' una gioielleria?</label
+                    >
+                    <Checkbox
                         input-id="is_company"
                         v-model="form.customer.is_company"
                         binary
@@ -127,7 +148,7 @@ const store_customer = ref(false);
             <div class="row pb-3">
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Telefono</label>
-                    <InputText 
+                    <InputText
                         class="w-100"
                         v-model="form.customer.phone"
                         id="phone"
@@ -136,7 +157,7 @@ const store_customer = ref(false);
                 </div>
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <InputText 
+                    <InputText
                         class="w-100"
                         v-model="form.customer.email"
                         id="email"
@@ -146,18 +167,25 @@ const store_customer = ref(false);
             </div>
         </template>
 
-        <div 
+        <div
             class="pb-3"
             v-for="(working, index) in form.workings"
             :key="index"
             v-if="form.workings"
         >
             <FieldSet
-                :toggleable="current_customer_is_company && form.workings.length > 1" 
+                :toggleable="
+                    current_customer_is_company && form.workings.length > 1
+                "
                 :collapsed="index + 1 != form.workings.length"
-                :legend="current_customer_is_company ? (working.customer.surname ?? `Lavorazione #${index + 1}`) : undefined"
+                :legend="
+                    current_customer_is_company
+                        ? (working.customer.surname ??
+                          `Lavorazione #${index + 1}`)
+                        : undefined
+                "
             >
-                <WorkingCard 
+                <WorkingCard
                     :current_customer_is_company="current_customer_is_company"
                     :working="working"
                     :brands="brands"
@@ -168,7 +196,7 @@ const store_customer = ref(false);
             </FieldSet>
         </div>
 
-        <WorkingCard 
+        <WorkingCard
             :current_customer_is_company="current_customer_is_company"
             :working="form"
             :brands="brands"
@@ -178,5 +206,4 @@ const store_customer = ref(false);
             v-else
         />
     </div>
-
 </template>

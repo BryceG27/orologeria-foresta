@@ -1,24 +1,24 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import NoItemsFound from '@/Components/NoItemsFound.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import NoItemsFound from "@/Components/NoItemsFound.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Tag from 'primevue/tag';
-import InputText from 'primevue/inputtext';
-import DatePicker from 'primevue/datepicker';
-import Select from 'primevue/select';
-import MultiSelect from 'primevue/multiselect';
-import ContextMenu from 'primevue/contextmenu';
-import Toast from 'primevue/toast';
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Tag from "primevue/tag";
+import InputText from "primevue/inputtext";
+import DatePicker from "primevue/datepicker";
+import Select from "primevue/select";
+import MultiSelect from "primevue/multiselect";
+import ContextMenu from "primevue/contextmenu";
+import Toast from "primevue/toast";
 
-import { FilterMatchMode } from '@primevue/core/api';
-import { useToast } from 'primevue/usetoast';
+import { FilterMatchMode } from "@primevue/core/api";
+import { useToast } from "primevue/usetoast";
 
-import moment from 'moment';
-import Swal from 'sweetalert2';
-import { ref } from 'vue';
+import moment from "moment";
+import Swal from "sweetalert2";
+import { ref, onMounted } from "vue";
 
 const toast = useToast();
 
@@ -27,37 +27,60 @@ const cm = ref(null);
 
 const menuModel = ref([
     {
-        label: 'Modifica',
-        icon: 'fa fa-pen text-primary',
-        class: 'p-2',
-        action : 'view',
+        label: "Modifica",
+        icon: "fa fa-pen text-primary",
+        class: "p-2",
+        action: "edit",
     },
     {
-        label: 'Stampa',
-        icon: 'fa fa-print text-info',
-        class: 'p-2',
-        action : 'print',
+        label: "Stampa",
+        icon: "fa fa-print text-info",
+        class: "p-2",
+        action: "print",
     },
     {
         separator: true,
     },
     {
-        label: 'Cancella',
-        icon: 'fa fa-trash text-danger',
-        class: 'p-2',
-        action : 'delete',
+        label: "Cancella",
+        icon: "fa fa-trash text-danger",
+        class: "p-2",
+        action: "delete",
         command: () => {
             deleteDocument(selected_document.value);
-        }
-    }
+        },
+    },
 ]);
 
-defineProps({
-    documents : Array
-})
+const props = defineProps({
+    flash: Object,
+    errors: Object,
+    documents: Array,
+});
+
+onMounted(() => {
+    if (props.flash?.message)
+        toast.add({
+            severity: "success",
+            summary: "Successo",
+            detail: props.flash.message,
+            life: 3000,
+        });
+
+    if (Object.keys(props.errors).length > 0) {
+        Object.keys(props.errors).forEach((key) => {
+            toast.add({
+                severity: "error",
+                summary: "Errore",
+                detail: props.errors[key],
+                life: 3000,
+            });
+        });
+    }
+});
 
 const filters = ref({
-    'status.id' : { value: null, matchMode: FilterMatchMode.IN }
+    "status.id": { value: null, matchMode: FilterMatchMode.IN },
 });
 
 const onRowContextMenu = (event) => {
@@ -67,48 +90,65 @@ const onRowContextMenu = (event) => {
 const onCellEditComplete = (event) => {
     let { data, newData, field } = event;
 
-    if(JSON.stringify(data) === JSON.stringify(newData))
-        return;
+    if (JSON.stringify(data) === JSON.stringify(newData)) return;
 
-    const form = useForm({...newData})
+    const form = useForm({ ...newData });
 
-    form.patch(route('transport-documents.update', { document: data.id }), {
+    form.patch(route("transport-documents.update", { document: data.id }), {
         onSuccess: () => {
-            toast.add({severity:'success', summary: 'Successo', detail: 'DDT aggiornato con successo', life: 3000});
-        }
-    })
-}
+            toast.add({
+                severity: "success",
+                summary: "Successo",
+                detail: "DDT aggiornato con successo",
+                life: 3000,
+            });
+        },
+    });
+};
 
 const deleteDocument = (document) => {
     const form = useForm({});
 
     Swal.fire({
-        title: 'Sei sicuro?',
+        title: "Sei sicuro?",
         text: "Non potrai recuperare questo DDT!",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sì, cancella!',
-        cancelButtonText: 'Annulla'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sì, cancella!",
+        cancelButtonText: "Annulla",
     }).then((result) => {
         if (result.isConfirmed) {
-            /* form.delete(route('documents.destroy', { document: document.id }), {
-                onSuccess: () => {
-                    toast.add({severity:'success', summary: 'Successo', detail: 'DDT cancellato con successo', life: 3000});
+            form.delete(
+                route("transport-documents.destroy", {
+                    transport_document: document.id,
+                }),
+                {
+                    onSuccess: () => {
+                        toast.add({
+                            severity: "success",
+                            summary: "Successo",
+                            detail: "DDT cancellato con successo",
+                            life: 3000,
+                        });
+                    },
+                    onError: () => {
+                        toast.add({
+                            severity: "error",
+                            summary: "Errore",
+                            detail: "Errore durante la cancellazione del DDT",
+                            life: 3000,
+                        });
+                    },
                 },
-                onError: () => {
-                    toast.add({severity:'error', summary: 'Errore', detail: 'Errore durante la cancellazione del DDT', life: 3000});
-                }
-            }); */
+            );
         }
     });
-}
+};
 </script>
 <template>
     <Head title="DDT" />
-
-    <Toast />
 
     <AuthenticatedLayout>
         <BaseBlock title="DDT" class="m-2">
@@ -122,16 +162,32 @@ const deleteDocument = (document) => {
                 </Link>
             </template>
 
+            <Toast />
+
             <ContextMenu ref="cm" :model="menuModel">
                 <template #item="{ item }">
-                    <Link 
+                    <Link
                         v-if="item.action === 'edit'"
                         class="btn btn-link link-dark"
-                        :href="route('transport-documents.edit', selected_document?.id)"
+                        :href="
+                            route(
+                                'transport-documents.edit',
+                                selected_document?.id,
+                            )
+                        "
                     >
                         <i class="fa fa-pen me-2 link-info"></i>
                         Modifica
                     </Link>
+
+                    <button
+                        class="btn btn-link link-dark"
+                        type="button"
+                        v-else-if="item.action == 'print'"
+                    >
+                        <i class="fa fa-print me-2 link-info"></i>
+                        Stampa
+                    </button>
 
                     <button class="btn btn-link link-dark" type="button" v-else>
                         <i class="fa fa-trash me-2 link-danger"></i>
@@ -150,27 +206,43 @@ const deleteDocument = (document) => {
                 @rowContextmenu="onRowContextMenu"
             >
                 <template #empty>
-                    <NoItemsFound message="Nessun DDT trovato" icon="fa fa-inbox" />
+                    <NoItemsFound
+                        message="Nessun DDT trovato"
+                        icon="fa fa-inbox"
+                    />
                 </template>
 
-                <Column field="id" header="ID" />
-                <Column field="workshop.name" header="Officina"></Column>
-                <Column header="Lavorazioni">
+                <Column style="width: 5%" field="document_id" header="ID" />
+                <Column
+                    style="width: 20%"
+                    field="workshop.name"
+                    header="Officina"
+                ></Column>
+                <Column style="width: 30%" header="Lavorazioni">
                     <template #body="{ data }">
-                        <ul>
-                            <li v-for="work in data.workings" :key="work.id">{{ work.name }}</li>
+                        <ul class="list-group">
+                            <li
+                                class="list-group-item"
+                                v-for="working in data.workings"
+                                :key="working.id"
+                            >
+                                {{
+                                    working.customer.surname ??
+                                    working.customer.company_name
+                                }}
+                                - {{ working.brand.name }}
+                            </li>
                         </ul>
                     </template>
                 </Column>
-                <Column field="date" header="Data di creazione">
+                <Column style="width: 35%" field="notes" header="Note" />
+                <Column style="width: 10%" field="date" header="Data">
                     <template #body="{ data }">
-                        {{ moment(data.date).format('DD/MM/YYYY') }}
+                        {{ moment(data.date).format("DD/MM/YYYY") }}
                     </template>
                 </Column>
             </DataTable>
         </BaseBlock>
     </AuthenticatedLayout>
 </template>
-<style scoped>
-    
-</style>
+<style scoped></style>
