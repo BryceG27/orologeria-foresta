@@ -1,0 +1,74 @@
+@page {
+    size: A5 portrait;
+    margin: 7mm 6mm;
+}
+
+body {
+    margin: 0;
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: 7pt;
+    line-height: 1.25;
+    color: #8d3530;
+}
+
+/* Spazio libero per la futura colonna di loghi. */
+.brand-logos {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22.5mm;
+    height: 190mm;
+}
+
+main { margin-left: 24.5mm; }
+header { text-align: center; padding: 1mm 0 2.5mm; }
+.heading { font-size: 12.5pt; font-weight: bold; }
+.business-logo {
+    height: 14.5mm;
+    overflow: hidden;
+    margin: 0.5mm 0 1.5mm;
+    line-height: 1;
+}
+.business-logo img { width: 62.5mm; height: auto; margin-top: -3mm; }
+.address { font-size: 7pt; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+td { vertical-align: top; overflow-wrap: break-word; word-wrap: break-word; }
+.receipt-heading td { border: 0.2mm solid #8d3530; vertical-align: middle; padding: 1.5mm 1mm; }
+.email { width: 48%; font-size: 6pt; font-style: italic; }
+.receipt-label { width: 25%; font-size: 9.5pt; font-weight: bold; border-right: 0 !important; }
+.receipt-number { font-size: 12.5pt; color: #222; text-align: center; border-left: 0 !important; }
+.details td { border: 0.2mm solid #8d3530; padding: 1.25mm 1.5mm; height: 9.5mm; }
+.details { margin-top: -0.2mm; }
+.label { font-size: 6.5pt; margin-bottom: 1mm; }
+.value { font-size: 8.5pt; color: #222; min-height: 3.5mm; }
+.company { color: #222; font-size: 5.5pt; margin-top: 0.5mm; }
+.warranty { text-align: center; vertical-align: middle; font-size: 5pt; }
+.checkbox { display: inline-block; width: 2mm; height: 2mm; border: 0.2mm solid #8d3530; margin-right: 1.5mm; vertical-align: middle; }
+.warranty .checkbox { margin: 0 0 1mm; }
+.text-box, .interventions { border: 0.2mm solid #8d3530; margin-top: -0.2mm; padding: 1.5mm; }
+.written-text { white-space: pre-wrap; overflow-wrap: break-word; word-wrap: break-word; color: #222; font-size: 7.5pt; line-height: 1.5; }
+.description .written-text { min-height: 4.5mm; }
+.writing-line { border-bottom: 0.1mm solid #b88883; height: 4mm; }
+.interventions { padding: 2mm 2.5mm; }
+.interventions td { width: 50%; font-size: 6pt; padding: 0.5mm 0; }
+.notes .written-text { min-height: 4.5mm; }
+.payment { margin-top: -0.2mm; }
+.payment td { border: 0.2mm solid #8d3530; padding: 1.5mm; }
+.total { width: 30%; }
+
+.document-title { text-align: center; font-size: 10pt; font-weight: bold; margin-bottom: 2mm; }
+.working-list { margin-top: -0.2mm; }
+.working-list thead { display: table-header-group; }
+.working-list tr { page-break-inside: avoid; }
+.working-list th, .working-list td {
+    border: 0.2mm solid #8d3530;
+    padding: 1.5mm 1mm;
+    text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    font-size: 6.5pt;
+}
+.working-list td { color: #222; }
+.working-list th { background: #faf3f2; }
+.item-description { white-space: pre-wrap; margin-top: 0.5mm; }
+.signatures { page-break-inside: avoid; }

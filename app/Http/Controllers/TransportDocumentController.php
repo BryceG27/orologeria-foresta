@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TransportDocument;
 use App\Models\Working;
 use App\Models\Workshop;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -54,7 +55,11 @@ class TransportDocumentController extends Controller
      */
     public function show(TransportDocument $transportDocument)
     {
-        //
+        $transportDocument->loadMissing('workshop', 'workings.customer', 'workings.brand');
+
+        return Pdf::loadView('pdf.transport-document', compact('transportDocument'))
+            ->setPaper('a5', 'portrait')
+            ->stream('ddt-'.$transportDocument->id.'.pdf');
     }
 
     /**

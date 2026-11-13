@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\PaymentOrderStatus;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -81,7 +82,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order->loadMissing('customer', 'brand', 'status', 'payment_status');
+
+        return Pdf::loadView('pdf.order', compact('order'))
+            ->setPaper('a5', 'portrait')
+            ->stream('ordine-'.$order->id.'.pdf');
     }
 
     /**

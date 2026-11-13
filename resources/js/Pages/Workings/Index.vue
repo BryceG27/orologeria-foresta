@@ -171,6 +171,8 @@ const onCellEditComplete = (event) => {
                         v-else-if="item.action === 'print'"
                         class="p-2 link-dark"
                         :href="route('workings.show', selected_working?.id)"
+                        target="_blank"
+                        rel="noopener"
                     >
                         <i class="fa fa-print me-2 link-info"></i>
                         Stampa

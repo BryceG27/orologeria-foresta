@@ -12,6 +12,7 @@ use App\Models\WorkingStatus;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Http\Resources\WorkingResource;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class WorkingController extends Controller
 {
@@ -113,7 +114,11 @@ class WorkingController extends Controller
      */
     public function show(Working $working)
     {
-        //
+        $working->loadMissing('customer', 'company', 'brand', 'paymentMethod');
+
+        return Pdf::loadView('pdf.working', compact('working'))
+            ->setPaper('a5', 'portrait')
+            ->stream('lavorazione-'.$working->id.'.pdf');
     }
 
     /**

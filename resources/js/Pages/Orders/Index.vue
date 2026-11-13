@@ -160,6 +160,8 @@ const deleteOrder = (order) => {
                         v-else-if="item.action === 'print'"
                         class="link-dark p-2"
                         :href="route('orders.show', selected_order?.id)"
+                        target="_blank"
+                        rel="noopener"
                     >
                         <i class="fa fa-print me-2 link-info"></i>
                         Stampa

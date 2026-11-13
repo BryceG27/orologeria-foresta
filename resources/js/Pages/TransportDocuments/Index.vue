@@ -180,14 +180,16 @@ const deleteDocument = (document) => {
                         Modifica
                     </Link>
 
-                    <button
+                    <a
                         class="btn btn-link link-dark"
-                        type="button"
                         v-else-if="item.action == 'print'"
+                        :href="route('transport-documents.show', selected_document?.id)"
+                        target="_blank"
+                        rel="noopener"
                     >
                         <i class="fa fa-print me-2 link-info"></i>
                         Stampa
-                    </button>
+                    </a>
 
                     <button class="btn btn-link link-dark" type="button" v-else>
                         <i class="fa fa-trash me-2 link-danger"></i>
