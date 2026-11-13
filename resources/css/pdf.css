@@ -56,6 +56,18 @@ td { vertical-align: top; overflow-wrap: break-word; word-wrap: break-word; }
 .payment td { border: 0.2mm solid #8d3530; padding: 1.5mm; }
 .total { width: 30%; }
 
+/* Una griglia di quattro colonne condivisa da tutte le righe dell'ordine. */
+.order-document td {
+    border: 0.2mm solid #8d3530;
+    padding: 1.5mm;
+}
+.order-document tr { page-break-inside: avoid; }
+.order-document .email, .order-document .receipt-label { width: auto; }
+.order-document .email, .order-document .receipt-label, .order-document .receipt-number { vertical-align: middle; }
+.order-document .order-heading td { padding: 0.6mm 1.5mm; line-height: 1.1; }
+.order-document .order-heading .receipt-label { font-size: 8.5pt; }
+.order-document .order-heading .receipt-number { font-size: 10pt; }
+
 .document-title { text-align: center; font-size: 10pt; font-weight: bold; margin-bottom: 2mm; }
 .working-list { margin-top: -0.2mm; }
 .working-list thead { display: table-header-group; }
