@@ -12,7 +12,7 @@ const form = useForm({
     name: null,
     surname : null,
     company_name: null,
-    working_company_id : null,
+    custom_working_id : null,
     email : null,
     phone : null,
     notes : null,
@@ -34,7 +34,7 @@ const submit = () => {
     <AuthenticatedLayout>
         <BaseBlock title="Nuovo cliente" class="m-2">
             <template #options>
-                <div class="d-flex justify-content-end gap-2">
+                <div class="gap-2 d-flex justify-content-end">
                     <button 
                         class="btn btn-sm btn-alt-success" 
                         v-if="!form.processing"

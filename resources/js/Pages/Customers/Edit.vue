@@ -7,6 +7,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { DataTable, Column } from 'primevue';
 import moment from 'moment';
+import NoItemsFound from '@/Components/NoItemsFound.vue';
 
 const props = defineProps({
     customer: Object,
@@ -17,7 +18,7 @@ const form = useForm({
     name: props.customer.name,
     surname: props.customer.surname,
     company_name: props.customer.company_name,
-    working_company_id: props.customer.working_company_id,
+    custom_working_id: props.customer.custom_working_id,
     email: props.customer.email,
     phone: props.customer.phone,
     notes: props.customer.notes,
@@ -25,7 +26,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.patch(route('customers.edit', { customer: props.customer.id }), {
+    form.patch(route('customers.update', { customer: props.customer.id }), {
         onSuccess: () => {
             form.reset();
         },
@@ -46,7 +47,7 @@ const costs = computed(() => {
     <AuthenticatedLayout>
         <BaseBlock title="Aggiorna cliente" class="m-2">
             <template #options>
-                <div class="d-flex justify-content-end gap-2">
+                <div class="gap-2 d-flex justify-content-end">
                     <button 
                         class="btn btn-sm btn-alt-success" 
                         v-if="!form.processing"
@@ -76,6 +77,9 @@ const costs = computed(() => {
                 :value="customer.is_company ? customer.associated_workings : customer.workings"
                 rowGroupMode="subheader"
             >
+                <template #empty>
+                    <NoItemsFound :showIcon="true" message="Nessuna lavorazione presente" />
+                </template>
                 <Column header="#" field="working_id" />
                 <Column header="Cliente" v-if="customer.is_company">
                     <template #body="{ data }">
@@ -108,7 +112,7 @@ const costs = computed(() => {
                 </Column>
 
                 <template #footer>
-                    <div class="d-flex justify-content-end w-full gap-2">Totale: <strong>{{ costs }} &euro;</strong></div>
+                    <div class="w-full gap-2 d-flex justify-content-end">Totale: <strong>{{ costs }} &euro;</strong></div>
                 </template>
             </DataTable>
         </BaseBlock>

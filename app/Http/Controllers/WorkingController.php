@@ -10,8 +10,8 @@ use App\Models\PaymentMethod;
 use App\Models\Working;
 use App\Models\WorkingStatus;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use App\Http\Resources\WorkingResource;
 
 class WorkingController extends Controller
 {
@@ -21,9 +21,13 @@ class WorkingController extends Controller
     public function index()
     {
         return Inertia::render('Workings/Index', [
-            'workings' => Working::with(['customer' => function ($query) {
+            'workings' => WorkingResource::collection(Working::query()
+                ->with('customer', 'brand', 'status')
+                ->orderBy('created_at', 'desc')
+                ->get()),
+            /* 'workings' => Working::with(['customer' => function ($query) {
                 $query->select('id', DB::raw('CASE WHEN is_company THEN company_name ELSE CONCAT(name, " ", surname) END AS description'));
-            }, 'brand', 'status'])->orderBy('created_at', 'desc')->get(),
+            }, 'brand', 'status'])->orderBy('created_at', 'desc')->get(), */
             'brands' => Brand::orderBy('name')->get(),
             'statuses' => WorkingStatus::all(),
         ]);

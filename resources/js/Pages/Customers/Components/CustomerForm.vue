@@ -28,11 +28,11 @@ const props = defineProps({
                     <label for="custom_working_id" class="form-label">Numero lavorazione custom</label>
                 </div>
             </template>
-            <div class="col-md-4 text-center">
+            <div class="text-center col-md-4">
                 <label for="is_company" class="form-label">E' una gioielleria?</label>
             </div>
         </div>
-        <div class="row align-items-center pb-3">
+        <div class="pb-3 row align-items-center">
             <template v-if="!form.is_company">
                 <div class="col-md-4">
                     <InputText 
@@ -60,12 +60,12 @@ const props = defineProps({
                 <div class="col-md-4">
                     <InputText 
                         class="w-100"
-                        id="working_company_id"
-                        v-model="form.working_company_id"
+                        id="custom_working_id"
+                        v-model="form.custom_working_id"
                     />
                 </div>
             </template>
-            <div class="col-md-4 d-flex flex-row justify-content-center align-items-center gap-2">
+            <div class="flex-row gap-2 col-md-4 d-flex justify-content-center align-items-center">
                 <Checkbox 
                     input-id="is_company"
                     v-model="form.is_company"
@@ -73,7 +73,7 @@ const props = defineProps({
                 />
             </div>
         </div>
-        <div class="row pb-3">
+        <div class="pb-3 row">
             <div class="col-md-6">
                 <label for="email" class="form-label">Email</label>
                 <InputText 

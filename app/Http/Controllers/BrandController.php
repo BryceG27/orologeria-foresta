@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -15,7 +16,7 @@ class BrandController extends Controller
     public function index()
     {
         return Inertia::render('Brands/Index', [
-            'brands' => Brand::withTrashed()->get(),
+            'brands' => BrandResource::collection(Brand::withTrashed()->get()),
         ]);
     }
 
@@ -59,7 +60,7 @@ class BrandController extends Controller
     public function edit(Brand $brand)
     {
         return Inertia::render('Brands/Edit', [
-            'brand' => $brand
+            'brand' => BrandResource::make($brand)
         ]);
     }
 

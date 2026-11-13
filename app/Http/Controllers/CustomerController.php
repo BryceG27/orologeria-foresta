@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,7 +15,7 @@ class CustomerController extends Controller
     public function index()
     {
         return Inertia::render('Customers/Index', [
-            'customers' => Customer::all(),
+            'customers' => CustomerResource::collection(Customer::all()),
         ]);
     }
 
@@ -33,15 +34,9 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        
-    }
+        Customer::create(Customer::validate($request));
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Customer $customer)
-    {
-        //
+        return redirect()->route('customers.index')->with('success', 'Cliente creato con successo.');
     }
 
     /**
@@ -50,11 +45,11 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         return Inertia::render('Customers/Edit', [
-            'customer' => $customer->load(['workings' => function($query) {
+            'customer' => CustomerResource::make($customer->load(['workings' => function($query) {
                 $query->with('brand', 'status');
             }, 'associated_workings' => function($query) {
                 $query->with('brand', 'status', 'customer');
-            }]),
+            }])),
         ]);
     }
 
@@ -63,7 +58,9 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        $customer->update(Customer::validate($request));
+
+        return redirect()->route('customers.index')->with('success', 'Cliente aggiornato con successo.');
     }
 
     /**

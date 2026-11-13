@@ -28,6 +28,7 @@ const props = defineProps({
     workings: Array,
 });
 
+
 const cm = ref();
 const selected_working = ref();
 const menuModel = ref([
@@ -100,12 +101,12 @@ const onRowContextMenu = (event) => {
 
 const filters = ref({
     working_id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    brand_id: { value: null, matchMode: FilterMatchMode.IN },
+    'brand.id': { value: null, matchMode: FilterMatchMode.IN },
     "customer.description": {
         value: null,
         matchMode: FilterMatchMode.CONTAINS,
     },
-    working_status_id: { value: [1, 2, 3], matchMode: FilterMatchMode.IN },
+    'status.id': { value: [1, 2, 3], matchMode: FilterMatchMode.IN },
     delivery_date: { value: null, matchMode: FilterMatchMode.DATE_IS },
 });
 
@@ -160,7 +161,7 @@ const onCellEditComplete = (event) => {
                 <template #item="{ item }">
                     <Link
                         v-if="item.action === 'view'"
-                        class="link-dark p-2"
+                        class="p-2 link-dark"
                         :href="route('workings.edit', selected_working?.id)"
                     >
                         <i class="fa fa-pen me-2 link-info"></i>
@@ -168,7 +169,7 @@ const onCellEditComplete = (event) => {
                     </Link>
                     <a
                         v-else-if="item.action === 'print'"
-                        class="link-dark p-2"
+                        class="p-2 link-dark"
                         :href="route('workings.show', selected_working?.id)"
                     >
                         <i class="fa fa-print me-2 link-info"></i>
@@ -176,7 +177,7 @@ const onCellEditComplete = (event) => {
                     </a>
 
                     <button
-                        class="btn btn-link link-dark p-2"
+                        class="p-2 btn btn-link link-dark"
                         type="button"
                         v-else
                     >
@@ -257,7 +258,7 @@ const onCellEditComplete = (event) => {
                     style="width: 15%"
                     header="Marchio"
                     field="brand.name"
-                    filterField="brand_id"
+                    filterField="brand.id"
                     :showFilterMatchModes="false"
                 >
                     <template #filter="{ filterModel, filterCallback }">
@@ -334,7 +335,7 @@ const onCellEditComplete = (event) => {
                     style="width: 20%"
                     header="Stato"
                     field="status.name"
-                    filterField="working_status_id"
+                    filterField="status.id"
                     :showFilterMatchModes="false"
                 >
                     <template #body="{ data }">
